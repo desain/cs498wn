@@ -8,6 +8,14 @@
 #define OUTPUT_LED_PIN 8
 #define INPUT_PIN 0
 
+
+
+#define DEBUG_PRINT_TIME 0
+#define DEBUG_SEND 0
+#define DEBUG_LOOPBACK 0
+#define DEBUG_HILOS 0
+
+
 /************* SENDING **************/
 const int lookup4b[16] = {
   /* 0b0000 */ 0b11110,
@@ -30,15 +38,15 @@ const int lookup4b[16] = {
 
 char message[] = "hi";
 int message_len = strlen(message);
-bool next_4b_block_highorder = true;
-int cur_message_idx = 0;
 
-byte cur_5b_block = 0;
-int bits_sent_in_5b_block = 0;
-
-bool prev_hilo;
-
-unsigned long next_send_time;
+struct sending {
+  byte cur_5b_block = 0;
+  int bits_sent_in_5b_block = 0;
+  bool next_4b_block_highorder = true;
+  int cur_message_idx = 0;
+  bool prev_hilo;
+  unsigned long next_send_time;
+} sending;
 
 /************* RECEIVING ***************/
 int lookup5b[32] = {
@@ -113,9 +121,9 @@ void setup() {
   //////////// Setup sending ////////////
   pinMode(OUTPUT_LED_PIN, OUTPUT);
   //Start as if we just finished sending
-  cur_message_idx = message_len;
-  bits_sent_in_5b_block = 5;
-  next_send_time = SAMPLE_GAP_MILLIS;
+  sending.cur_message_idx = message_len;
+  sending.bits_sent_in_5b_block = 5;
+  sending.next_send_time = SAMPLE_GAP_MILLIS;
 
   //////////// Setup receiving /////////////
   hilos.next_sample_time = 0-1; //set to max value because we want to anchor it later
@@ -137,64 +145,89 @@ void setup() {
 void loop() {
 
   unsigned long current_time = millis();
+  #if DEBUG_PRINT_TIME == 1
+  Serial.print("Current time = ");
+  Serial.print(current_time);
+  Serial.print(", next send time = ");
+  Serial.print(sending.next_send_time);
+  Serial.print(", next sample time = ");
+  Serial.println(hilos.next_sample_time);
+  #endif
 
   ///////////// SENDING //////////////
 
-  if (current_time >= next_send_time) {
-    next_send_time += SAMPLE_GAP_MILLIS;
-
-    if (bits_sent_in_5b_block == 5) {
+  if (current_time >= sending.next_send_time) {
+    sending.next_send_time += SAMPLE_GAP_MILLIS;
+    
+    if (sending.bits_sent_in_5b_block == 5) {
       //setup for sending next block
-      bits_sent_in_5b_block = 0;
-
+      sending.bits_sent_in_5b_block = 0;
+      
       //get next block
-      if (cur_message_idx == message_len) {
-        cur_5b_block = PREAMBLE;
-        cur_message_idx = 0;
+      if (sending.cur_message_idx == message_len) {
+        sending.cur_5b_block = PREAMBLE;
+        sending.cur_message_idx = 0;
+        sending.next_4b_block_highorder = true;
       } else {
         byte cur_4b_block;
-        if (next_4b_block_highorder) {
+        if (sending.next_4b_block_highorder) {
           //Send the high order bits of the current character
-          cur_4b_block = (message[cur_message_idx] >> 4) & 0b1111;
+          cur_4b_block = (message[sending.cur_message_idx] >> 4) & 0b1111;
         } else {
           //Send the low order bits of the current character. After this we'll need to move to the next character
-          cur_4b_block = message[cur_message_idx++] & 0b1111;
+          cur_4b_block = message[sending.cur_message_idx++] & 0b1111;
         }
-        next_4b_block_highorder = !next_4b_block_highorder;
-        cur_5b_block = lookup4b[cur_4b_block];
+        sending.next_4b_block_highorder = !sending.next_4b_block_highorder;
+        sending.cur_5b_block = lookup4b[cur_4b_block];
       }
     }
-
+  
     //get current hilo to send
-    bool cur_bit = (cur_5b_block >> (4-bits_sent_in_5b_block)) & 1;
+    bool cur_bit = (sending.cur_5b_block >> (4-sending.bits_sent_in_5b_block)) & 1;
 
-    /*
+    #if DEBUG_SEND == 1
     Serial.print("Sending bit ");
     Serial.print(cur_bit, BIN);
     Serial.print(" which is the bit at index ");
-    Serial.print(4-bits_sent_in_5b_block);
+    Serial.print(4-sending.bits_sent_in_5b_block);
     Serial.print(" in ");
-    Serial.print(cur_5b_block, BIN);
+    Serial.print(sending.cur_5b_block, BIN);
     Serial.println();
-    */
+    #endif
+    
 
-    bool cur_hilo = prev_hilo ^ cur_bit; //NRZI encoding
-    prev_hilo = cur_hilo;
+    bool cur_hilo = sending.prev_hilo ^ cur_bit; //NRZI encoding
+    sending.prev_hilo = cur_hilo;
     //send current bit
     digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
-    bits_sent_in_5b_block++;
+    sending.bits_sent_in_5b_block++;
   }
 
   ////////////// RECEIVING /////////////////
-
+    
   //Update the ticker
   bool hilo = analogRead(INPUT_PIN) > THRESHOLD;
+  #if DEBUG_LOOPBACK == 1
+  hilo = sending.prev_hilo;
+  #endif
+
+  #if DEBUG_HILOS == 1
+  Serial.print("Got hilo ");
+  Serial.print(hilo);
+  Serial.print(" (prev was ");
+  Serial.print(blocks.prev_hilo);
+  Serial.println(")");
+  #endif
+  
   if (hilo) {
     //We saw a HI, so set the value to maximum, since we don't often get spurious 1s
     hilos.val = 255;
     if (!hilos.prev_val_hi) {
       //If we just transitioned low-to-high, re-anchor the clock
       hilos.next_sample_time = current_time + SAMPLE_GAP_MILLIS-FUDGE;
+      #if DEBUG_HILOS == 1
+      Serial.println("Re-anchored clock");
+      #endif
     }
   } else {
     //We saw a LO, so decrement our hilo tracker
@@ -204,6 +237,10 @@ void loop() {
       hilos.val -= DECAY;
     }
   }
+  #if DEBUG_HILOSVAL == 1
+  Serial.print("Hilos val = ");\
+  Serial.println(hilos.val);
+  #endif
 
   hilos.prev_val_hi = hilos.val >= 128;
 
@@ -253,14 +290,14 @@ void on_read_hilo(bool hilo) {
 void on_read_block(byte five_bit_block) {
   if (lookup5b[five_bit_block] == -1) {
     Serial.print("Got a bad block, marking packet as lost\n");
-    reset();
+    //reset();
   } else {
     byte four_bit_block = lookup5b[five_bit_block];
 
     Serial.print("Got 4 bit block ");
     Serial.print(four_bit_block, BIN);
     Serial.println(bytes.has_prev_block ? " lower" : " upper");
-
+    
     if (bytes.has_prev_block) {
       byte b = (bytes.prev_block << 4) | four_bit_block;
       bytes.has_prev_block = false;
@@ -276,7 +313,7 @@ void on_read_byte(byte b) {
 
   Serial.print("Got byte ");
   Serial.println((char)b);
-
+  
   packets.contents[packets.terminator_idx++] = b;
   packets.contents[packets.terminator_idx] = '\0';
   if (packets.terminator_idx == PACKET_SIZE_BYTES) {
@@ -289,3 +326,7 @@ void on_read_byte(byte b) {
   }
 
 }
+
+
+
+
