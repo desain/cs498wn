@@ -157,7 +157,7 @@ void loop() {
   ///////////// SENDING //////////////
 
   if (current_time >= sending.next_send_time) {
-    sending.next_send_time += SAMPLE_GAP_MILLIS;
+    sending.next_send_time = current_time + SAMPLE_GAP_MILLIS;
     
     if (sending.bits_sent_in_5b_block == 5) {
       //setup for sending next block
@@ -184,9 +184,14 @@ void loop() {
   
     //get current hilo to send
     bool cur_bit = (sending.cur_5b_block >> (4-sending.bits_sent_in_5b_block)) & 1;
+    bool cur_hilo = sending.prev_hilo ^ cur_bit; //NRZI encoding
+    sending.prev_hilo = cur_hilo;
+    //send current bit
 
     #if DEBUG_SEND == 1
-    Serial.print("Sending bit ");
+    Serial.print("Sending ");
+    Serial.print(cur_hilo ? "HIGH" : "LOW ");
+    Serial.print(" to represent bit ");
     Serial.print(cur_bit, BIN);
     Serial.print(" which is the bit at index ");
     Serial.print(4-sending.bits_sent_in_5b_block);
@@ -194,11 +199,8 @@ void loop() {
     Serial.print(sending.cur_5b_block, BIN);
     Serial.println();
     #endif
-    
 
-    bool cur_hilo = sending.prev_hilo ^ cur_bit; //NRZI encoding
-    sending.prev_hilo = cur_hilo;
-    //send current bit
+    
     digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
     sending.bits_sent_in_5b_block++;
   }
@@ -237,7 +239,7 @@ void loop() {
       hilos.val -= DECAY;
     }
   }
-  #if DEBUG_HILOSVAL == 1
+  #if DEBUG_HILOS == 1
   Serial.print("Hilos val = ");\
   Serial.println(hilos.val);
   #endif
@@ -290,7 +292,7 @@ void on_read_hilo(bool hilo) {
 void on_read_block(byte five_bit_block) {
   if (lookup5b[five_bit_block] == -1) {
     Serial.print("Got a bad block, marking packet as lost\n");
-    //reset();
+    reset();
   } else {
     byte four_bit_block = lookup5b[five_bit_block];
 
