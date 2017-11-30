@@ -30,8 +30,6 @@ const int lookup4b[16] = {
 
 char message[] = "hi";
 int message_len = strlen(message);
-// msg is 0110 1000
-//send: 10000 01110 10010
 bool next_4b_block_highorder = true;
 int cur_message_idx = 0;
 
@@ -144,11 +142,11 @@ void loop() {
 
   if (current_time >= next_send_time) {
     next_send_time += SAMPLE_GAP_MILLIS;
-    
+
     if (bits_sent_in_5b_block == 5) {
       //setup for sending next block
       bits_sent_in_5b_block = 0;
-      
+
       //get next block
       if (cur_message_idx == message_len) {
         cur_5b_block = PREAMBLE;
@@ -166,10 +164,10 @@ void loop() {
         cur_5b_block = lookup4b[cur_4b_block];
       }
     }
-  
+
     //get current hilo to send
     bool cur_bit = (cur_5b_block >> (4-bits_sent_in_5b_block)) & 1;
-  
+
     /*
     Serial.print("Sending bit ");
     Serial.print(cur_bit, BIN);
@@ -179,7 +177,7 @@ void loop() {
     Serial.print(cur_5b_block, BIN);
     Serial.println();
     */
-    
+
     bool cur_hilo = prev_hilo ^ cur_bit; //NRZI encoding
     prev_hilo = cur_hilo;
     //send current bit
@@ -188,7 +186,7 @@ void loop() {
   }
 
   ////////////// RECEIVING /////////////////
-    
+
   //Update the ticker
   bool hilo = analogRead(INPUT_PIN) > THRESHOLD;
   if (hilo) {
@@ -214,6 +212,12 @@ void loop() {
     hilos.next_sample_time += SAMPLE_GAP_MILLIS;
     on_read_hilo(hilos.prev_val_hi);
   }
+}
+
+void reset() {
+  blocks.cur_block_size = 0;
+  blocks.state = WAIT_FOR_PREAMBLE;
+  bytes.has_prev_block = false;
 }
 
 void on_read_hilo(bool hilo) {
@@ -248,14 +252,15 @@ void on_read_hilo(bool hilo) {
 
 void on_read_block(byte five_bit_block) {
   if (lookup5b[five_bit_block] == -1) {
-    //TODO WE RECEIVED A BAD BLOCK
+    Serial.print("Got a bad block, marking packet as lost\n");
+    reset();
   } else {
     byte four_bit_block = lookup5b[five_bit_block];
 
     Serial.print("Got 4 bit block ");
     Serial.print(four_bit_block, BIN);
     Serial.println(bytes.has_prev_block ? " lower" : " upper");
-    
+
     if (bytes.has_prev_block) {
       byte b = (bytes.prev_block << 4) | four_bit_block;
       bytes.has_prev_block = false;
@@ -271,7 +276,7 @@ void on_read_byte(byte b) {
 
   Serial.print("Got byte ");
   Serial.println((char)b);
-  
+
   packets.contents[packets.terminator_idx++] = b;
   packets.contents[packets.terminator_idx] = '\0';
   if (packets.terminator_idx == PACKET_SIZE_BYTES) {
@@ -280,9 +285,7 @@ void on_read_byte(byte b) {
     packets.terminator_idx = 0;
     packets.contents[0] = '\0';
     // We finished receiving a packet, so go back to waiting for the preamble
-    blocks.state = WAIT_FOR_PREAMBLE;
+    reset();
   }
 
-
 }
-
