@@ -1,0 +1,601 @@
+BEGIN RECEIVING
+Current time = 0, next send time = 300, next sample time = 4294967295
+Got hilo 1 (prev was 0)
+Re-anchored clock
+Hilos val = 255
+Current time = 87, next send time = 300, next sample time = 290
+Got hilo 1 (prev was 0)
+Hilos val = 255
+Current time = 198, next send time = 300, next sample time = 290
+Got hilo 1 (prev was 0)
+Hilos val = 255
+Current time = 310, next send time = 300, next sample time = 290
+Got hilo 1 (prev was 0)
+Hilos val = 255
+Got bit 1
+Current time = 434, next send time = 610, next sample time = 590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 546, next send time = 610, next sample time = 590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 658, next send time = 610, next sample time = 590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 782, next send time = 958, next sample time = 890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 894, next send time = 958, next sample time = 890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 1018, next send time = 958, next sample time = 1190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1133, next send time = 1318, next sample time = 1190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1248, next send time = 1318, next sample time = 1190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 1375, next send time = 1318, next sample time = 1490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1490, next send time = 1675, next sample time = 1490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Got preamble!
+Current time = 1633, next send time = 1675, next sample time = 1790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1748, next send time = 1675, next sample time = 1790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1864, next send time = 2048, next sample time = 1790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 1990, next send time = 2048, next sample time = 2090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2106, next send time = 2048, next sample time = 2090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2233, next send time = 2406, next sample time = 2390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2349, next send time = 2406, next sample time = 2390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2464, next send time = 2406, next sample time = 2390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2590, next send time = 2764, next sample time = 2690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2706, next send time = 2764, next sample time = 2690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2833, next send time = 2764, next sample time = 2990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2949, next send time = 3133, next sample time = 2990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3064, next send time = 3133, next sample time = 2990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Got a bad block, marking packet as lost
+Current time = 3232, next send time = 3133, next sample time = 3290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3348, next send time = 3532, next sample time = 3290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 3475, next send time = 3532, next sample time = 3590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3591, next send time = 3532, next sample time = 3590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 3717, next send time = 3891, next sample time = 3890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3832, next send time = 3891, next sample time = 3890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3948, next send time = 3891, next sample time = 3890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4075, next send time = 4248, next sample time = 4190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4191, next send time = 4248, next sample time = 4190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4317, next send time = 4248, next sample time = 4490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4432, next send time = 4617, next sample time = 4490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4548, next send time = 4617, next sample time = 4490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4675, next send time = 4617, next sample time = 4790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4791, next send time = 4975, next sample time = 4790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4917, next send time = 4975, next sample time = 5090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5032, next send time = 4975, next sample time = 5090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5148, next send time = 5332, next sample time = 5090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5275, next send time = 5332, next sample time = 5390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5391, next send time = 5332, next sample time = 5390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5517, next send time = 5691, next sample time = 5690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5633, next send time = 5691, next sample time = 5690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5748, next send time = 5691, next sample time = 5690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5875, next send time = 6048, next sample time = 5990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5991, next send time = 6048, next sample time = 5990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 6117, next send time = 6048, next sample time = 6290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6233, next send time = 6417, next sample time = 6290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6348, next send time = 6417, next sample time = 6290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 6475, next send time = 6417, next sample time = 6590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6591, next send time = 6775, next sample time = 6590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 6717, next send time = 6775, next sample time = 6890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6833, next send time = 6775, next sample time = 6890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6948, next send time = 7133, next sample time = 6890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7075, next send time = 7133, next sample time = 7190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 7191, next send time = 7133, next sample time = 7190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7318, next send time = 7491, next sample time = 7490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 7433, next send time = 7491, next sample time = 7490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 7548, next send time = 7491, next sample time = 7490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7675, next send time = 7848, next sample time = 7790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 7791, next send time = 7848, next sample time = 7790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7918, next send time = 7848, next sample time = 8090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8033, next send time = 8218, next sample time = 8090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8148, next send time = 8218, next sample time = 8090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 8275, next send time = 8218, next sample time = 8390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8391, next send time = 8575, next sample time = 8390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 8518, next send time = 8575, next sample time = 8690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8633, next send time = 8575, next sample time = 8690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8749, next send time = 8933, next sample time = 8690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 8876, next send time = 8933, next sample time = 8990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8991, next send time = 8933, next sample time = 8990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 9118, next send time = 9291, next sample time = 9290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9233, next send time = 9291, next sample time = 9290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9349, next send time = 9291, next sample time = 9290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 9476, next send time = 9649, next sample time = 9590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9591, next send time = 9649, next sample time = 9590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 9718, next send time = 9649, next sample time = 9890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9833, next send time = 10018, next sample time = 9890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9950, next send time = 10018, next sample time = 9890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10078, next send time = 10018, next sample time = 10190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10196, next send time = 10378, next sample time = 10190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10327, next send time = 10378, next sample time = 10490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10444, next send time = 10378, next sample time = 10490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10563, next send time = 10744, next sample time = 10490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10693, next send time = 10744, next sample time = 10790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10812, next send time = 10744, next sample time = 10790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10942, next send time = 11112, next sample time = 11090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11061, next send time = 11112, next sample time = 11090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11180, next send time = 11112, next sample time = 11090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11309, next send time = 11480, next sample time = 11390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11427, next send time = 11480, next sample time = 11390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11557, next send time = 11480, next sample time = 11690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11676, next send time = 11857, next sample time = 11690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11795, next send time = 11857, next sample time = 11690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11925, next send time = 11857, next sample time = 11990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12044, next send time = 12225, next sample time = 11990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 12173, next send time = 12225, next sample time = 12290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12292, next send time = 12225, next sample time = 12290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 12422, next send time = 12592, next sample time = 12590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12540, next send time = 12592, next sample time = 12590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12659, next send time = 12592, next sample time = 12590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 12789, next send time = 12959, next sample time = 12890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12907, next send time = 12959, next sample time = 12890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13037, next send time = 12959, next sample time = 13190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13156, next send time = 13337, next sample time = 13190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13275, next send time = 13337, next sample time = 13190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13405, next send time = 13337, next sample time = 13490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13523, next send time = 13705, next sample time = 13490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13654, next send time = 13705, next sample time = 13790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13771, next send time = 13705, next sample time = 13790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13890, next send time = 14071, next sample time = 13790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14020, next send time = 14071, next sample time = 14090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14139, next send time = 14071, next sample time = 14090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14269, next send time = 14439, next sample time = 14390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14388, next send time = 14439, next sample time = 14390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14507, next send time = 14439, next sample time = 14390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14636, next send time = 14807, next sample time = 14690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14754, next send time = 14807, next sample time = 14690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14884, next send time = 14807, next sample time = 14990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15003, next send time = 15184, next sample time = 14990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 15133, next send time = 15184, next sample time = 15290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15252, next send time = 15184, next sample time = 15290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15370, next send time = 15552, next sample time = 15290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 15500, next send time = 15552, next sample time = 15590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15619, next send time = 15552, next sample time = 15590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 15749, next send time = 15919, next sample time = 15890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15867, next send time = 15919, next sample time = 15890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15986, next send time = 15919, next sample time = 15890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16116, next send time = 16286, next sample time = 16190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16234, next send time = 16286, next sample time = 16190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16364, next send time = 16286, next sample time = 16490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16483, next send time = 16664, next sample time = 16490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16602, next send time = 16664, next sample time = 16490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16732, next send time = 16664, next sample time = 16790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16850, next send time = 17032, next sample time = 16790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16980, next send time = 17032, next sample time = 17090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 17098, next send time = 17032, next sample time = 17090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 17228, next send time = 17398, next sample time = 17390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 17347, next send time = 17398, next sample time = 17390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 17466, next send time = 17398, next sample time = 17390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 17596, next send time = 17766, next sample time = 17690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 17715, next send time = 17766, next sample time = 17690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 17845, next send time = 17766, next sample time = 17990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 17963, next send time = 18145, next sample time = 17990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 18081, next send time = 18145, next sample time = 17990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 18211, next send time = 18145, next sample time = 18290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 18330, next send time = 18511, next sample time = 18290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 18460, next send time = 18511, next sample time = 18590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 18579, next send time = 18511, next sample time = 18590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 18697, next send time = 18879, next sample time = 18590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 18827, next send time = 18879, next sample time = 18890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 18946, next send time = 18879, next sample time = 18890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 19076, next send time = 19246, next sample time = 19190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 19194, next send time = 19246, next sample time = 19190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 19324, next send time = 19246, next sample time = 19490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 19443, next send time = 19624, next sample time = 19490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 19561, next send time = 19624, next sample time = 19490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 19691, next send time = 19624, next sample time = 19790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 19810, next send time = 19991, next sample time = 19790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 19940, next send time = 19991, next sample time = 20090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 20059, next send time = 19991, next sample time = 20090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 20177, next send time = 20359, next sample time = 20090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 20307, next send time = 20359, next sample time = 20390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 20425, next send time = 20359, next sample time = 20390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 20555, next send time = 20725, next sample time = 20690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 20674, next send time = 20725, next sample time = 20690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 20793, next send time = 20725, next sample time = 20690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 20923, next send time = 21093, next sample time = 20990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 21042, next send time = 21093, next sample time = 20990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 21172, next send time = 21093, next sample time = 21290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 21289, next send time = 21472, next sample time = 21290
+Got hilo 1 (prev 
