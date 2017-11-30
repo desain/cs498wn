@@ -1,0 +1,440 @@
+ding LOW  to BEGIN RECEIVING
+Current time = 0, next send time = 300, next sample time = 4294967295
+Got hilo 1 (prev was 0)
+Re-anchored clock
+Hilos val = 255
+Current time = 87, next send time = 300, next sample time = 290
+Got hilo 1 (prev was 0)
+Hilos val = 255
+Current time = 198, next send time = 300, next sample time = 290
+Got hilo 1 (prev was 0)
+Hilos val = 255
+Current time = 310, next send time = 300, next sample time = 290
+Sending HIGH to represent bit 1 which is the bit at index 4 in 10000
+Got hilo 1 (prev was 0)
+Hilos val = 255
+Got bit 1
+Current time = 506, next send time = 610, next sample time = 590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 619, next send time = 610, next sample time = 590
+Sending HIGH to represent bit 0 which is the bit at index 3 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 816, next send time = 919, next sample time = 890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 928, next send time = 919, next sample time = 890
+Sending HIGH to represent bit 0 which is the bit at index 2 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 1124, next send time = 1228, next sample time = 1190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1240, next send time = 1228, next sample time = 1190
+Sending HIGH to represent bit 0 which is the bit at index 1 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 1439, next send time = 1540, next sample time = 1490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1555, next send time = 1540, next sample time = 1490
+Sending HIGH to represent bit 0 which is the bit at index 0 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Got preamble!
+Current time = 1770, next send time = 1855, next sample time = 1790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 1886, next send time = 1855, next sample time = 1790
+Sending HIGH to represent bit 0 which is the bit at index 4 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2084, next send time = 2186, next sample time = 2090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2200, next send time = 2186, next sample time = 2090
+Sending LOW  to represent bit 1 which is the bit at index 3 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2399, next send time = 2500, next sample time = 2390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2526, next send time = 2500, next sample time = 2690
+Sending HIGH to represent bit 1 which is the bit at index 2 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 2712, next send time = 2826, next sample time = 2690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 2839, next send time = 2826, next sample time = 2990
+Sending LOW  to represent bit 1 which is the bit at index 1 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3026, next send time = 3139, next sample time = 2990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Got a bad block, marking packet as lost
+Current time = 3195, next send time = 3139, next sample time = 3290
+Sending LOW  to represent bit 0 which is the bit at index 0 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3382, next send time = 3495, next sample time = 3290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 3509, next send time = 3495, next sample time = 3590
+Sending HIGH to represent bit 1 which is the bit at index 4 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 3697, next send time = 3809, next sample time = 3590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 3824, next send time = 3809, next sample time = 3890
+Sending HIGH to represent bit 0 which is the bit at index 3 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4013, next send time = 4124, next sample time = 3890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4140, next send time = 4124, next sample time = 4190
+Sending HIGH to represent bit 0 which is the bit at index 2 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4328, next send time = 4440, next sample time = 4190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4454, next send time = 4440, next sample time = 4490
+Sending LOW  to represent bit 1 which is the bit at index 1 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4642, next send time = 4754, next sample time = 4490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 4769, next send time = 4754, next sample time = 4790
+Sending LOW  to represent bit 0 which is the bit at index 0 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 4958, next send time = 5069, next sample time = 4790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5085, next send time = 5069, next sample time = 5090
+Sending LOW  to represent bit 0 which is the bit at index 4 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5272, next send time = 5385, next sample time = 5090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5399, next send time = 5385, next sample time = 5390
+Sending HIGH to represent bit 1 which is the bit at index 3 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5598, next send time = 5699, next sample time = 5690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 5712, next send time = 5699, next sample time = 5690
+Sending LOW  to represent bit 1 which is the bit at index 2 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 5911, next send time = 6012, next sample time = 5990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6027, next send time = 6012, next sample time = 5990
+Sending HIGH to represent bit 1 which is the bit at index 1 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 6225, next send time = 6327, next sample time = 6290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6341, next send time = 6327, next sample time = 6290
+Sending HIGH to represent bit 0 which is the bit at index 0 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 6540, next send time = 6641, next sample time = 6590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6656, next send time = 6641, next sample time = 6590
+Sending LOW  to represent bit 1 which is the bit at index 4 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 6855, next send time = 6956, next sample time = 6890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 6970, next send time = 6956, next sample time = 6890
+Sending LOW  to represent bit 0 which is the bit at index 3 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7170, next send time = 7270, next sample time = 7190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 7285, next send time = 7270, next sample time = 7190
+Sending LOW  to represent bit 0 which is the bit at index 2 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7485, next send time = 7585, next sample time = 7490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 7601, next send time = 7585, next sample time = 7490
+Sending HIGH to represent bit 1 which is the bit at index 1 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7800, next send time = 7901, next sample time = 7790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 7927, next send time = 7901, next sample time = 8090
+Sending LOW  to represent bit 1 which is the bit at index 0 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8115, next send time = 8227, next sample time = 8090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 8242, next send time = 8227, next sample time = 8390
+Sending HIGH to represent bit 1 which is the bit at index 4 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8430, next send time = 8542, next sample time = 8390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 8557, next send time = 8542, next sample time = 8690
+Sending HIGH to represent bit 0 which is the bit at index 3 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 8745, next send time = 8857, next sample time = 8690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 8872, next send time = 8857, next sample time = 8990
+Sending HIGH to represent bit 0 which is the bit at index 2 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9061, next send time = 9172, next sample time = 8990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 9188, next send time = 9172, next sample time = 9290
+Sending HIGH to represent bit 0 which is the bit at index 1 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9375, next send time = 9488, next sample time = 9290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 9502, next send time = 9488, next sample time = 9590
+Sending HIGH to represent bit 0 which is the bit at index 0 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 9691, next send time = 9802, next sample time = 9590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 9818, next send time = 9802, next sample time = 9890
+Sending HIGH to represent bit 0 which is the bit at index 4 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10005, next send time = 10118, next sample time = 9890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10134, next send time = 10118, next sample time = 10190
+Sending LOW  to represent bit 1 which is the bit at index 3 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10324, next send time = 10434, next sample time = 10190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10455, next send time = 10434, next sample time = 10490
+Sending HIGH to represent bit 1 which is the bit at index 2 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10644, next send time = 10755, next sample time = 10490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 10774, next send time = 10755, next sample time = 10790
+Sending LOW  to represent bit 1 which is the bit at index 1 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 10964, next send time = 11074, next sample time = 10790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11095, next send time = 11074, next sample time = 11090
+Sending LOW  to represent bit 0 which is the bit at index 0 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11296, next send time = 11395, next sample time = 11390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11415, next send time = 11395, next sample time = 11390
+Sending HIGH to represent bit 1 which is the bit at index 4 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11618, next send time = 11715, next sample time = 11690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 11737, next send time = 11715, next sample time = 11690
+Sending HIGH to represent bit 0 which is the bit at index 3 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 11939, next send time = 12037, next sample time = 11990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12058, next send time = 12037, next sample time = 11990
+Sending HIGH to represent bit 0 which is the bit at index 2 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 12261, next send time = 12358, next sample time = 12290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12380, next send time = 12358, next sample time = 12290
+Sending LOW  to represent bit 1 which is the bit at index 1 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 12582, next send time = 12680, next sample time = 12590
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 12700, next send time = 12680, next sample time = 12590
+Sending LOW  to represent bit 0 which is the bit at index 0 in 10010
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 12903, next send time = 13000, next sample time = 12890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13033, next send time = 13000, next sample time = 13190
+Sending LOW  to represent bit 0 which is the bit at index 4 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13223, next send time = 13333, next sample time = 13190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13353, next send time = 13333, next sample time = 13490
+Sending HIGH to represent bit 1 which is the bit at index 3 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13544, next send time = 13653, next sample time = 13490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13674, next send time = 13653, next sample time = 13790
+Sending LOW  to represent bit 1 which is the bit at index 2 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 13864, next send time = 13974, next sample time = 13790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 13995, next send time = 13974, next sample time = 14090
+Sending HIGH to represent bit 1 which is the bit at index 1 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14185, next send time = 14295, next sample time = 14090
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14315, next send time = 14295, next sample time = 14390
+Sending HIGH to represent bit 0 which is the bit at index 0 in 1110
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14504, next send time = 14615, next sample time = 14390
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14635, next send time = 14615, next sample time = 14690
+Sending LOW  to represent bit 1 which is the bit at index 4 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 14826, next send time = 14935, next sample time = 14690
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 14956, next send time = 14935, next sample time = 14990
+Sending LOW  to represent bit 0 which is the bit at index 3 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15148, next send time = 15256, next sample time = 14990
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 15278, next send time = 15256, next sample time = 15290
+Sending LOW  to represent bit 0 which is the bit at index 2 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15469, next send time = 15578, next sample time = 15290
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 15599, next send time = 15578, next sample time = 15590
+Sending HIGH to represent bit 1 which is the bit at index 1 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 15802, next send time = 15899, next sample time = 15890
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 15921, next send time = 15899, next sample time = 15890
+Sending LOW  to represent bit 1 which is the bit at index 0 in 10011
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16123, next send time = 16221, next sample time = 16190
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16242, next send time = 16221, next sample time = 16190
+Sending HIGH to represent bit 1 which is the bit at index 4 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16445, next send time = 16542, next sample time = 16490
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16563, next send time = 16542, next sample time = 16490
+Sending HIGH to represent bit 0 which is the bit at index 3 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 16765, next send time = 16863, next sample time = 16790
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Current time = 16884, next send time = 16863, next sample time = 16790
+Sending HIGH to represent bit 0 which is the bit at index 2 in 10000
+Got hilo 1 (prev was 1)
+Hilos val = 255
+Got bit 0
+Current time = 17087, next send time = 17184, next sample time = 17090
+Got hilo 1 (prev was 1)
+Hilos val = 25
