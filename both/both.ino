@@ -5,7 +5,8 @@
 #define PACKET_SIZE_BYTES 2
 #define DECAY 1
 #define PREAMBLE 0b10000
-#define LED_PIN 8
+#define OUTPUT_LED_PIN 8
+#define INPUT_PIN 0
 
 /************* SENDING **************/
 const int lookup4b[16] = {
@@ -107,12 +108,12 @@ struct packets {
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(0, INPUT);
+  pinMode(INPUT_PIN, INPUT);
   Serial.begin(9600);
   Serial.println("BEGIN RECEIVING");
 
   //////////// Setup sending ////////////
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(OUTPUT_LED_PIN, OUTPUT);
   //Start as if we just finished sending
   cur_message_idx = message_len;
   bits_sent_in_5b_block = 5;
@@ -182,14 +183,14 @@ void loop() {
     bool cur_hilo = prev_hilo ^ cur_bit; //NRZI encoding
     prev_hilo = cur_hilo;
     //send current bit
-    digitalWrite(LED_PIN, cur_hilo ? HIGH : LOW);
+    digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
     bits_sent_in_5b_block++;
   }
 
   ////////////// RECEIVING /////////////////
     
   //Update the ticker
-  bool hilo = analogRead(0) > THRESHOLD;
+  bool hilo = analogRead(INPUT_PIN) > THRESHOLD;
   if (hilo) {
     //We saw a HI, so set the value to maximum, since we don't often get spurious 1s
     hilos.val = 255;
