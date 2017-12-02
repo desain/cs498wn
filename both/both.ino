@@ -1,20 +1,24 @@
-#define SAMPLE_GAP_MILLIS 5000
+/******** TIMING VARIABLES ********/
+// A lower sample gap means we need a higher delay
+// Combinations of values that work: gap=300, delay=1; gap=100, delay=10
+#define SAMPLE_GAP_MILLIS 100
 #define FUDGE 10
-#define THRESHOLD 90
+#define DECAY 10
+
+#define ANALOG_READ_THRESHOLD 90
 //MAX_PACKET_SIZE_BYTES includes the null terminator
 #define MAX_PACKET_SIZE_BYTES 10
-#define DECAY 1
 #define PREAMBLE 0b10000
 #define OUTPUT_LED_PIN 8
 #define INPUT_PIN A0
 #define TRACKER_THRESHOLD 128
 
-#define DEBUG_PRINT_TIME 1
+#define DEBUG_PRINT_TIME 0
 #define DEBUG_LOOPBACK 0
 #define DEBUG_NOTIFY_ON_REANCHOR 0
 #define DEBUG_PRINT_SENT_BITS_AND_HILOS 0
-#define DEBUG_PRINT_RECEIVED_BITS_AND_HILOS 1
-#define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 1
+#define DEBUG_PRINT_RECEIVED_BITS_AND_HILOS 0
+#define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 0
 
 unsigned long current_time;
 
@@ -38,8 +42,8 @@ const int lookup4b[16] = {
   /* 0b1111 */ 0b11101
 };
 
-char message[] = "hi";
-int message_len = strlen(message);
+const char message[] = "hi";
+const int message_len = strlen(message);
 
 struct sending {
   byte cur_5b_block;
@@ -125,7 +129,7 @@ void setup() {
   //Start as if we just finished sending
   sending.cur_5b_block = 0;
   sending.next_4b_block_highorder = true;
-  sending.cur_message_idx = message_len;
+  sending.cur_message_idx = message_len+1;
   sending.bits_sent_in_5b_block = 5;
   sending.next_send_time = SAMPLE_GAP_MILLIS;
 
@@ -172,7 +176,7 @@ void loop() {
       sending.bits_sent_in_5b_block = 0;
       
       //get next block
-      if (sending.cur_message_idx == message_len) {
+      if (sending.cur_message_idx > message_len) {
         sending.cur_5b_block = PREAMBLE;
         sending.cur_message_idx = 0;
         sending.next_4b_block_highorder = true;
@@ -217,7 +221,7 @@ void loop() {
   ////////////// RECEIVING /////////////////
     
   //Update the ticker
-  bool hilo = analogRead(INPUT_PIN) > THRESHOLD;
+  bool hilo = analogRead(INPUT_PIN) > ANALOG_READ_THRESHOLD;
   #if DEBUG_LOOPBACK == 1
   hilo = sending.prev_hilo;
   #endif
