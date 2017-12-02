@@ -13,6 +13,8 @@
 #define INPUT_PIN A0
 #define TRACKER_THRESHOLD 128
 
+/******* PRINT DEBUGGING VARIABLES *******/
+// Serial printing tends to make loops take a lot longer, so let's not use these with short gaps
 #define DEBUG_PRINT_TIME 0
 #define DEBUG_LOOPBACK 0
 #define DEBUG_NOTIFY_ON_REANCHOR 0
