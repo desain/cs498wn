@@ -1,4 +1,4 @@
-#define SAMPLE_GAP_MILLIS 1000
+#define SAMPLE_GAP_MILLIS 5000
 #define FUDGE 10
 #define THRESHOLD 90
 //MAX_PACKET_SIZE_BYTES includes the null terminator
@@ -10,11 +10,11 @@
 #define TRACKER_THRESHOLD 128
 
 #define DEBUG_PRINT_TIME 1
-#define DEBUG_SEND 0
 #define DEBUG_LOOPBACK 0
-#define DEBUG_HILOS 0
-#define DEBUG_REANCHOR 1
-#define DEBUG_RECEIVE_BITS 1
+#define DEBUG_NOTIFY_ON_REANCHOR 0
+#define DEBUG_PRINT_SENT_BITS_AND_HILOS 0
+#define DEBUG_PRINT_RECEIVED_BITS_AND_HILOS 1
+#define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 1
 
 unsigned long current_time;
 
@@ -196,7 +196,7 @@ void loop() {
     sending.prev_hilo = cur_hilo;
     //send current bit
 
-    #if DEBUG_SEND == 1
+    #if DEBUG_PRINT_SENT_BITS_AND_HILOS == 1
     debug_print_time();
     Serial.print("Sending ");
     Serial.print(cur_hilo ? "HIGH" : "LOW ");
@@ -221,27 +221,21 @@ void loop() {
   #if DEBUG_LOOPBACK == 1
   hilo = sending.prev_hilo;
   #endif
-
-  #if DEBUG_HILOS == 1
-  Serial.print("Got hilo ");
-  Serial.print(hilo);
-  Serial.print(" (prev was ");
-  Serial.print(blocks.prev_hilo);
-  Serial.println(")");
-  #endif
-
   
   bool read_hilo_now = current_time >= hilos.next_sample_time;
   bool reanchor = false;
 
+  #if DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER == 1
   Serial.print(hilo);
+  #endif
+  
   if (hilo) {
     //We saw a HI, so set the value to maximum, since we don't often get spurious 1s
     hilos.tracker = 255;
     if (!hilos.prev_val_hi) {
       //If we just transitioned low-to-high, re-anchor the clock
       reanchor = true;
-      #if DEBUG_REANCHOR == 1
+      #if DEBUG_NOTIFY_ON_REANCHOR == 1
       Serial.println();
       debug_print_time();
       Serial.println("Re-anchored clock");
@@ -283,7 +277,7 @@ void on_read_hilo(bool hilo) {
   blocks.cur_block = ((blocks.cur_block << 1) | cur_bit) & 0b11111;
   blocks.prev_hilo = hilo;
 
-  #if DEBUG_RECEIVE_BITS == 1
+  #if DEBUG_PRINT_RECEIVED_BITS_AND_HILOS == 1
   Serial.println();
   debug_print_time();
   Serial.print("Got ");
