@@ -11,8 +11,8 @@
 #define ANALOG_READ_THRESHOLD 90
 
 /********* SENDING VARIABLES *********/
-//MAX_PACKET_SIZE_BYTES includes the null terminator
-#define MAX_PACKET_SIZE_BYTES 10
+//MAX_MESSAGE_BYTECOUNT includes the null terminator
+#define MAX_MESSAGE_BYTECOUNT 10
 #define PREAMBLE 0b10000
 
 /********* RECEIVING VARIABLES ********/
@@ -49,16 +49,16 @@ const int lookup4b[16] = {
   /* 0b1111 */ 0b11101
 };
 
-const char message[] = "hi";
-const int message_len = strlen(message);
-
 struct sending {
-  byte cur_5b_block;
-  int bits_sent_in_5b_block;
-  bool next_4b_block_will_be_high_order_bits_of_byte;
-  int cur_message_idx;
-  bool prev_hilo;
   unsigned long next_send_time;
+  int bits_sent_in_5b_block;
+  int cur_message_idx;
+  int cur_message_bytecount;
+  byte cur_5b_block;
+  bool next_4b_block_will_be_high_order_bits_of_byte;
+  bool prev_hilo;
+  bool waiting_for_sending_data;
+  char message[MAX_MESSAGE_BYTECOUNT];
 } sending;
 
 /************* RECEIVING ***************/
@@ -116,13 +116,13 @@ struct blocks {
 } blocks;
 
 struct bytes {
-  byte prev_block;
-  bool has_prev_block;
+  byte highorder_4b_block;
+  bool has_highorder_4b_block_already;
 } bytes;
 
 struct packets {
   int terminator_idx;
-  char contents[MAX_PACKET_SIZE_BYTES];
+  char contents[MAX_MESSAGE_BYTECOUNT];
 } packets;
 
 void setup() {
@@ -133,11 +133,7 @@ void setup() {
 
   //////////// Setup sending ////////////
   pinMode(OUTPUT_LED_PIN, OUTPUT);
-  //Start as if we just finished sending
-  sending.cur_5b_block = 0;
-  sending.next_4b_block_will_be_high_order_bits_of_byte = true;
-  sending.cur_message_idx = message_len+1;
-  sending.bits_sent_in_5b_block = 5;
+  sending.waiting_for_sending_data = true;
   sending.next_send_time = SAMPLE_GAP_MILLIS;
 
   //////////// Setup receiving /////////////
@@ -150,8 +146,8 @@ void setup() {
   blocks.cur_block = 0;
   blocks.prev_hilo = 0;
 
-  bytes.prev_block = 0;
-  bytes.has_prev_block = false;
+  bytes.highorder_4b_block = 0;
+  bytes.has_highorder_4b_block_already = false;
 
   packets.terminator_idx = 0;
   packets.contents[0] = '\0';
@@ -169,6 +165,93 @@ void debug_print_time() {
   #endif
 }
 
+//Sets up new message if there is one.
+//Sets up sending variables correctly for next loop iteration.
+void sending_check_for_new_message() {
+  int bytes_waiting = Serial.available();
+  if (bytes_waiting > 0) {
+    if (bytes_waiting >= MAX_MESSAGE_BYTECOUNT-1) {
+      bytes_waiting = MAX_MESSAGE_BYTECOUNT-1;
+    }
+    for (int i = 0; i < bytes_waiting; i++) {
+      sending.message[i] = Serial.read();
+    }
+    sending.message[bytes_waiting] = '\0';
+    sending.cur_message_bytecount = bytes_waiting+1;
+
+    sending.cur_5b_block = PREAMBLE;
+    sending.bits_sent_in_5b_block = 0;
+
+    sending.cur_message_idx = -1; //The preamble is kind of at the -1st index
+    sending.next_4b_block_will_be_high_order_bits_of_byte = true; //Send high order bits first
+    
+    Serial.print("Sending Message [bytecount:");
+    Serial.print(sending.cur_message_bytecount);
+    Serial.print("]: ");
+    Serial.println(sending.message);
+    sending.waiting_for_sending_data = false;
+  }
+}
+
+//Send next bit in current message.
+//Assumes all the sending variables are set up correctly.
+void sending_send_next_bit() {    
+  //get current hilo to send
+  bool cur_bit = (sending.cur_5b_block >> (4-sending.bits_sent_in_5b_block)) & 1;
+  bool cur_hilo = sending.prev_hilo ^ cur_bit; //NRZI encoding
+  sending.prev_hilo = cur_hilo;
+  
+  //send current bit
+  #if DEBUG_PRINT_SENT_BITS_AND_HILOS == 1
+  debug_print_time();
+  Serial.print("Sending ");
+  Serial.print(cur_hilo ? "HIGH" : "LOW ");
+  Serial.print(" for bit ");
+  Serial.print(cur_bit, BIN);
+  Serial.print(" = bit at index ");
+  Serial.print(4-sending.bits_sent_in_5b_block);
+  Serial.print(" in ");
+  Serial.print(sending.cur_5b_block, BIN);
+  Serial.print(" = code for ");
+  Serial.print(lookup5b[sending.cur_5b_block], BIN);
+  Serial.print(" = the ");
+  Serial.print(sending.next_4b_block_will_be_high_order_bits_of_byte ? "low" : "high");
+  Serial.print(" bits of ");
+  Serial.print(sending.message[sending.cur_message_idx]);
+  Serial.println();
+  #endif
+  digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
+  sending.bits_sent_in_5b_block++;
+
+  if (sending.bits_sent_in_5b_block == 5) {
+    //We just sent the last bit in the block, so let's get a new block
+    int new_4b_block;
+    if (sending.next_4b_block_will_be_high_order_bits_of_byte) {
+      //Next, we want to send the high order bits of the next character. Is there a next character?
+      if (sending.cur_message_idx+1 <= sending.cur_message_bytecount-1) {
+        //There is a next character, so set it as the current character and start sending its high order bits
+        sending.cur_message_idx++;
+        new_4b_block = (sending.message[sending.cur_message_idx] >> 4) & 0b1111;
+      } else {+
+        //No next character - we finished sending the message, so there's no new block
+        new_4b_block = -1;
+      }
+    } else {
+      //Next, we want to send the low order bits of the current character.
+      new_4b_block = sending.message[sending.cur_message_idx] & 0b1111;
+    }
+
+    if (new_4b_block != -1) {
+      sending.next_4b_block_will_be_high_order_bits_of_byte ^= 1;
+      sending.cur_5b_block = lookup4b[new_4b_block];
+      sending.bits_sent_in_5b_block = 0;
+    } else {
+      //No new block, so change state to waiting for new data to send
+      sending.waiting_for_sending_data = true;
+    }
+  }
+}
+
 void loop() {
 
   current_time = millis();
@@ -177,50 +260,12 @@ void loop() {
 
   if (current_time >= sending.next_send_time) {
     sending.next_send_time = current_time + SAMPLE_GAP_MILLIS;
-    
-    if (sending.bits_sent_in_5b_block == 5) {
-      //setup for sending next block
-      sending.bits_sent_in_5b_block = 0;
-      
-      //get next block
-      if (sending.cur_message_idx > message_len) {
-        sending.cur_5b_block = PREAMBLE;
-        sending.cur_message_idx = 0;
-        sending.next_4b_block_will_be_high_order_bits_of_byte = true;
-      } else {
-        byte cur_4b_block;
-        if (sending.next_4b_block_will_be_high_order_bits_of_byte) {
-          //Send the high order bits of the current character
-          cur_4b_block = (message[sending.cur_message_idx] >> 4) & 0b1111;
-        } else {
-          //Send the low order bits of the current character. After this we'll need to move to the next character
-          cur_4b_block = message[sending.cur_message_idx++] & 0b1111;
-        }
-        sending.next_4b_block_will_be_high_order_bits_of_byte ^= 1; //Flip it
-        sending.cur_5b_block = lookup4b[cur_4b_block];
-      }
+    if (sending.waiting_for_sending_data) {
+      //We're waiting for a message to send
+      sending_check_for_new_message();
+    } else {
+      sending_send_next_bit();
     }
-  
-    //get current hilo to send
-    bool cur_bit = (sending.cur_5b_block >> (4-sending.bits_sent_in_5b_block)) & 1;
-    bool cur_hilo = sending.prev_hilo ^ cur_bit; //NRZI encoding
-    sending.prev_hilo = cur_hilo;
-
-	//send current bit
-    #if DEBUG_PRINT_SENT_BITS_AND_HILOS == 1
-    debug_print_time();
-    Serial.print("Sending ");
-    Serial.print(cur_hilo ? "HIGH" : "LOW ");
-    Serial.print(" to represent bit ");
-    Serial.print(cur_bit, BIN);
-    Serial.print(" which is the bit at index ");
-    Serial.print(4-sending.bits_sent_in_5b_block);
-    Serial.print(" in ");
-    Serial.print(sending.cur_5b_block, BIN);
-    Serial.println();
-    #endif
-    digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
-    sending.bits_sent_in_5b_block++;
   }
 
   ////////////// RECEIVING /////////////////
@@ -276,7 +321,7 @@ void loop() {
 void receiving_start_waiting_for_packet() {
   blocks.cur_block_size = 0;
   blocks.state = WAIT_FOR_PREAMBLE;
-  bytes.has_prev_block = false;
+  bytes.has_highorder_4b_block_already = false;
 }
 
 void on_read_hilo(bool hilo) {
@@ -316,23 +361,22 @@ void on_read_hilo(bool hilo) {
 }
 
 void on_read_block(byte five_bit_block) {
-  if (lookup5b[five_bit_block] == -1) {
+  int four_bit_block = lookup5b[five_bit_block];
+  if (four_bit_block == -1) {
     Serial.print("Got a bad block, marking packet as lost\n");
     receiving_start_waiting_for_packet();
   } else {
-    byte four_bit_block = lookup5b[five_bit_block];
-
     Serial.print("Got 4 bit block ");
     Serial.print(four_bit_block, BIN);
-    Serial.println(bytes.has_prev_block ? " lower" : " upper");
+    Serial.println(bytes.has_highorder_4b_block_already ? " lower" : " upper");
     
-    if (bytes.has_prev_block) {
-      byte b = (bytes.prev_block << 4) | four_bit_block;
-      bytes.has_prev_block = false;
+    if (bytes.has_highorder_4b_block_already) {
+      byte b = (bytes.highorder_4b_block << 4) | four_bit_block;
+      bytes.has_highorder_4b_block_already = false;
       on_read_byte(b);
     } else {
-      bytes.has_prev_block = true;
-      bytes.prev_block = four_bit_block;
+      bytes.has_highorder_4b_block_already = true;
+      bytes.highorder_4b_block = four_bit_block;
     }
   }
 }
@@ -344,7 +388,7 @@ void on_read_byte(byte b) {
   
   packets.contents[packets.terminator_idx++] = b;
   packets.contents[packets.terminator_idx] = '\0';
-  if (packets.terminator_idx == MAX_PACKET_SIZE_BYTES-1 || b == 0) {
+  if (packets.terminator_idx == MAX_MESSAGE_BYTECOUNT-1 || b == '\0') {
     Serial.print("Finished receiving packet! Contents: ");
     Serial.println(packets.contents);
     packets.terminator_idx = 0;
