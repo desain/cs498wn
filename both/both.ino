@@ -1,20 +1,22 @@
-#define SAMPLE_GAP_MILLIS 300
+#define SAMPLE_GAP_MILLIS 1000
 #define FUDGE 10
 #define THRESHOLD 90
-//PACKET_SIZE_BYTES doesn't include the null terminator
-#define PACKET_SIZE_BYTES 2
+//MAX_PACKET_SIZE_BYTES includes the null terminator
+#define MAX_PACKET_SIZE_BYTES 10
 #define DECAY 1
 #define PREAMBLE 0b10000
 #define OUTPUT_LED_PIN 8
-#define INPUT_PIN 0
+#define INPUT_PIN A0
+#define TRACKER_THRESHOLD 128
 
-
-
-#define DEBUG_PRINT_TIME 0
+#define DEBUG_PRINT_TIME 1
 #define DEBUG_SEND 0
 #define DEBUG_LOOPBACK 0
 #define DEBUG_HILOS 0
+#define DEBUG_REANCHOR 1
+#define DEBUG_RECEIVE_BITS 1
 
+unsigned long current_time;
 
 /************* SENDING **************/
 const int lookup4b[16] = {
@@ -40,10 +42,10 @@ char message[] = "hi";
 int message_len = strlen(message);
 
 struct sending {
-  byte cur_5b_block = 0;
-  int bits_sent_in_5b_block = 0;
-  bool next_4b_block_highorder = true;
-  int cur_message_idx = 0;
+  byte cur_5b_block;
+  int bits_sent_in_5b_block;
+  bool next_4b_block_highorder;
+  int cur_message_idx;
   bool prev_hilo;
   unsigned long next_send_time;
 } sending;
@@ -86,7 +88,7 @@ int lookup5b[32] = {
 
 struct hilos {
   unsigned long next_sample_time;
-  byte val;
+  byte tracker;
   bool prev_val_hi;
 } hilos;
 
@@ -109,7 +111,7 @@ struct bytes {
 
 struct packets {
   int terminator_idx;
-  char contents[PACKET_SIZE_BYTES+1];
+  char contents[MAX_PACKET_SIZE_BYTES];
 } packets;
 
 void setup() {
@@ -121,13 +123,15 @@ void setup() {
   //////////// Setup sending ////////////
   pinMode(OUTPUT_LED_PIN, OUTPUT);
   //Start as if we just finished sending
+  sending.cur_5b_block = 0;
+  sending.next_4b_block_highorder = true;
   sending.cur_message_idx = message_len;
   sending.bits_sent_in_5b_block = 5;
   sending.next_send_time = SAMPLE_GAP_MILLIS;
 
   //////////// Setup receiving /////////////
-  hilos.next_sample_time = 0-1; //set to max value because we want to anchor it later
-  hilos.val = 0;
+  hilos.next_sample_time = SAMPLE_GAP_MILLIS;
+  hilos.tracker = 0;
   hilos.prev_val_hi = 0;
 
   blocks.state = WAIT_FOR_PREAMBLE;
@@ -142,17 +146,21 @@ void setup() {
   packets.contents[0] = '\0';
 }
 
-void loop() {
-
-  unsigned long current_time = millis();
+void debug_print_time() {
   #if DEBUG_PRINT_TIME == 1
-  Serial.print("Current time = ");
+  Serial.print("[Current time = ");
   Serial.print(current_time);
   Serial.print(", next send time = ");
   Serial.print(sending.next_send_time);
   Serial.print(", next sample time = ");
-  Serial.println(hilos.next_sample_time);
+  Serial.print(hilos.next_sample_time);
+  Serial.print("] ");
   #endif
+}
+
+void loop() {
+
+  current_time = millis();
 
   ///////////// SENDING //////////////
 
@@ -189,6 +197,7 @@ void loop() {
     //send current bit
 
     #if DEBUG_SEND == 1
+    debug_print_time();
     Serial.print("Sending ");
     Serial.print(cur_hilo ? "HIGH" : "LOW ");
     Serial.print(" to represent bit ");
@@ -220,35 +229,43 @@ void loop() {
   Serial.print(blocks.prev_hilo);
   Serial.println(")");
   #endif
+
   
+  bool read_hilo_now = current_time >= hilos.next_sample_time;
+  bool reanchor = false;
+
+  Serial.print(hilo);
   if (hilo) {
     //We saw a HI, so set the value to maximum, since we don't often get spurious 1s
-    hilos.val = 255;
+    hilos.tracker = 255;
     if (!hilos.prev_val_hi) {
       //If we just transitioned low-to-high, re-anchor the clock
-      hilos.next_sample_time = current_time + SAMPLE_GAP_MILLIS-FUDGE;
-      #if DEBUG_HILOS == 1
+      reanchor = true;
+      #if DEBUG_REANCHOR == 1
+      Serial.println();
+      debug_print_time();
       Serial.println("Re-anchored clock");
       #endif
     }
   } else {
     //We saw a LO, so decrement our hilo tracker
-    if (hilos.val < DECAY) {
-      hilos.val = 0;
+    if (hilos.tracker < DECAY) {
+      hilos.tracker = 0;
     } else {
-      hilos.val -= DECAY;
+      hilos.tracker -= DECAY;
     }
   }
-  #if DEBUG_HILOS == 1
-  Serial.print("Hilos val = ");\
-  Serial.println(hilos.val);
-  #endif
 
-  hilos.prev_val_hi = hilos.val >= 128;
+  hilos.prev_val_hi = hilos.tracker >= TRACKER_THRESHOLD;
 
-  //Emit sample if needed
-  if (current_time >= hilos.next_sample_time) {
-    hilos.next_sample_time += SAMPLE_GAP_MILLIS;
+  //Emit sample if needed and update clock
+  if (read_hilo_now) {
+    if (reanchor) {
+      hilos.next_sample_time = current_time + SAMPLE_GAP_MILLIS - FUDGE;
+    } else {
+      hilos.next_sample_time += SAMPLE_GAP_MILLIS;
+    }
+    
     on_read_hilo(hilos.prev_val_hi);
   }
 }
@@ -266,8 +283,14 @@ void on_read_hilo(bool hilo) {
   blocks.cur_block = ((blocks.cur_block << 1) | cur_bit) & 0b11111;
   blocks.prev_hilo = hilo;
 
-  Serial.print("Got bit ");
+  #if DEBUG_RECEIVE_BITS == 1
+  Serial.println();
+  debug_print_time();
+  Serial.print("Got ");
+  Serial.print(hilo ? "HIGH" : "LOW ");
+  Serial.print(" as bit ");
   Serial.println(cur_bit, BIN);
+  #endif
 
   switch (blocks.state) {
   case WAIT_FOR_PREAMBLE:
@@ -318,7 +341,7 @@ void on_read_byte(byte b) {
   
   packets.contents[packets.terminator_idx++] = b;
   packets.contents[packets.terminator_idx] = '\0';
-  if (packets.terminator_idx == PACKET_SIZE_BYTES) {
+  if (packets.terminator_idx == MAX_PACKET_SIZE_BYTES-1 || b == 0) {
     Serial.print("Finished receiving packet! Contents: ");
     Serial.println(packets.contents);
     packets.terminator_idx = 0;
