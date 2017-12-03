@@ -232,7 +232,7 @@ void sending_send_next_bit() {
         //There is a next character, so set it as the current character and start sending its high order bits
         sending.cur_message_idx++;
         new_4b_block = (sending.message[sending.cur_message_idx] >> 4) & 0b1111;
-      } else {+
+      } else {
         //No next character - we finished sending the message, so there's no new block
         new_4b_block = -1;
       }
