@@ -1,10 +1,10 @@
 /*******************************************************************
  * So my idea for how we do PWM is that we have the sender send
  * pulses, and each length of pulse corresponds to a different
- * sequence of bits. Like, pulse of length 20ms is a 00, 30ms is a
- * 01, 40 = 10, 50 = 11. And we need a preamble to know how to
+ * sequence of bits. Like, pulse of length 200ms is a 00, 300ms is a
+ * 01, 400 = 10, 500 = 11. And we need a preamble to know how to
  * divide up the bits we get, so maybe the preamble can be a pulse
- * of width 60?
+ * of width 600?
  ******************************************************************/
 
 
@@ -18,13 +18,13 @@
 #define MAX_MESSAGE_BYTECOUNT 10
 
 //Wait this long after finishing one pulse to send the next one
-#define DELAY_BETWEEN_PULSES 10
+#define DELAY_BETWEEN_PULSES 100
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
-#define PULSE_WIDTH_DELTA 10
+#define PULSE_WIDTH_DELTA 100
 
 //The pulse for sending 0 will have this width
-#define SHORTEST_PULSE_WIDTH 20
+#define SHORTEST_PULSE_WIDTH 100
 
 //How many bits do we want to convey with a single pulse? Should be a power of 2
 #define BITS_PER_PULSE 2
@@ -40,7 +40,7 @@ int lookup_pulse_width[NUM_PULSE_WIDTHS]; //Will be initialized in setup()
 /******* PRINT DEBUGGING VARIABLES *******/
 // Serial printing tends to make loops take a lot longer, so let's not use these with short gaps
 #define DEBUG_PRINT_TIME 0
-#define DEBUG_PRINT_SENT_BITS_AND_HILOS 0
+#define DEBUG_PRINT_SENT_PULSES 0
 #define DEBUG_PRINT_RECEIVED_BITS_AND_HILOS 0
 #define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 0
 
@@ -96,6 +96,15 @@ void setup() {
   for (int data = 0; data < NUM_PULSE_WIDTHS; data++) {
     lookup_pulse_width[data] = SHORTEST_PULSE_WIDTH + PULSE_WIDTH_DELTA * data;
   }
+  for (int data = 0; data < NUM_PULSE_WIDTHS; data++) {
+    Serial.print("lookup_pulse_width[");
+    Serial.print(data);
+    Serial.print("] = ");
+    Serial.print(lookup_pulse_width[data]);
+    Serial.println();
+  }
+  Serial.print("Preamble pulse width = ");
+  Serial.println(PREAMBLE_PULSE_WIDTH);
 
   //////////// Setup receiving /////////////
   receiving.pulse_state = WAITING_FOR_PULSE;
@@ -118,13 +127,16 @@ void debug_print_time() {
 }
 
 inline void sending_send_pulse(int width) {
+  #if DEBUG_PRINT_SENT_PULSES == 1
+  Serial.print("Sending a pulse of width ");
+  Serial.println(width, DEC);
+  #endif
   digitalWrite(OUTPUT_LED_PIN, HIGH);
   sending.next_tick_time = current_time + width;
   sending.state = SENDING_PULSE;
 }
 
 void loop() {
-
   current_time = millis();
 
   ///////////// SENDING //////////////
@@ -134,7 +146,7 @@ void loop() {
     case WAITING_FOR_DATA_TO_SEND: {
       int bytes_waiting = Serial.available();
       if (bytes_waiting > 0) {
-        if (bytes_waiting >= MAX_MESSAGE_BYTECOUNT-1) {
+        if (bytes_waiting >= MAX_MESSAGE_BYTECOUNT) {
           bytes_waiting = MAX_MESSAGE_BYTECOUNT-1;
         }
         for (int i = 0; i < bytes_waiting; i++) {
@@ -143,19 +155,22 @@ void loop() {
         sending.message[bytes_waiting] = '\0';
         sending.cur_message_bytecount = bytes_waiting+1;
 
+        //Serial.print("Sending Message [bytecount:");
+        //Serial.print(sending.cur_message_bytecount);
+        //Serial.print("]: ");
+        //Serial.println(sending.message);
+
         sending_send_pulse(PREAMBLE_PULSE_WIDTH);
         //Act like we just finished sending the -1st byte in the message
         sending.cur_message_idx = -1;
         sending.num_pulses_sent_for_cur_byte = PULSES_PER_BYTE;
-        
-        Serial.print("Sending Message [bytecount:");
-        Serial.print(sending.cur_message_bytecount);
-        Serial.print("]: ");
-        Serial.println(sending.message);
+      } else {
+        sending.next_tick_time = current_time + DELAY_BETWEEN_PULSES; //we don't want to check for serial data too fast
       }
       break;
     }
     case SENDING_PULSE:
+      Serial.println("sending pulse state");
       //We just finished sending a pulse.
       digitalWrite(OUTPUT_LED_PIN, LOW);
       //Will there be a next pulse?
