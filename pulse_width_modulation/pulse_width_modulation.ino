@@ -22,6 +22,8 @@
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
 #define PULSE_WIDTH_DELTA 100
+//Kinda arbitrary value, but - as we're trying to interpret a received pulse width, how far off from the ideal width of data X do we allow it to be and still interpret it as X?
+constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 4;
 
 //The pulse for sending 0 will have this width
 #define SHORTEST_PULSE_WIDTH 100
@@ -61,9 +63,24 @@ struct sending {
   char message[MAX_MESSAGE_BYTECOUNT];
 } sending;
 
+void sending_send_pulse(int width) {
+  #if DEBUG_PRINT_SENT_PULSES == 1
+  Serial.print("Sending a pulse of width ");
+  Serial.println(width, DEC);
+  #endif
+  digitalWrite(OUTPUT_LED_PIN, HIGH);
+  sending.next_tick_time = current_time + width;
+  sending.state = SENDING_PULSE;
+}
+
 enum receiving_pulse_state {
   WAITING_FOR_PULSE,
   RECEIVING_PULSE
+};
+
+enum receiving_message_state {
+  WAITING_FOR_PREAMBLE,
+  RECEIVING_DATA
 };
 
 struct receiving {
@@ -71,6 +88,7 @@ struct receiving {
   unsigned long debounce_cur_pulse_tentative_end_time;
   int debounce_num_lows_read;
   enum receiving_pulse_state pulse_state;
+  enum receiving_message_state message_state;
 } receiving;
 
 struct bytes {
@@ -82,6 +100,14 @@ struct packets {
   int terminator_idx;
   char contents[MAX_MESSAGE_BYTECOUNT];
 } packets;
+
+void receiving_start_waiting_for_packet() {
+  receiving.message_state = WAITING_FOR_PREAMBLE;
+  bytes.cur_byte = 0;
+  bytes.num_bits_in_cur_byte = 0;
+  packets.terminator_idx = 0;
+  packets.contents[0] = '\0';
+}
 
 void setup() {
   // put your setup code here, to run once:
@@ -108,10 +134,7 @@ void setup() {
 
   //////////// Setup receiving /////////////
   receiving.pulse_state = WAITING_FOR_PULSE;
-  bytes.cur_byte = 0;
-  bytes.num_bits_in_cur_byte = 0;
-  packets.terminator_idx = 0;
-  packets.contents[0] = '\0';
+  receiving_start_waiting_for_packet();
 }
 
 void debug_print_time() {
@@ -124,16 +147,6 @@ void debug_print_time() {
   Serial.print(hilos.next_sample_time);
   Serial.print("] ");
   #endif
-}
-
-inline void sending_send_pulse(int width) {
-  #if DEBUG_PRINT_SENT_PULSES == 1
-  Serial.print("Sending a pulse of width ");
-  Serial.println(width, DEC);
-  #endif
-  digitalWrite(OUTPUT_LED_PIN, HIGH);
-  sending.next_tick_time = current_time + width;
-  sending.state = SENDING_PULSE;
 }
 
 void loop() {
@@ -230,10 +243,29 @@ void on_read_pulse(int width) {
   Serial.print("Got a pulse of width ");
   Serial.println(width, DEC);
 
-  //TODO figure out which possible pulse width is closest to the actual width
-
-  int data = /* ??? */ 0;
-  on_read_data(data);
+  switch (receiving.message_state) {
+  case WAITING_FOR_PREAMBLE: {
+    int diff_from_preamble_width = width - PREAMBLE_PULSE_WIDTH;
+    if (abs(diff_from_preamble_width) < MAX_ALLOWED_PULSE_WIDTH_ERROR) {
+      Serial.println("Got preamble!");
+      receiving.message_state = RECEIVING_DATA;
+    }
+    break;
+  }
+  case RECEIVING_DATA:
+    //TODO is there a better way to do this than a for loop?? I feel like there should be but idk what it is
+    for (int data = 0; data < NUM_PULSE_WIDTHS; data++) {
+      int diff_from_data_width = width - lookup_pulse_width[data];
+      if (abs(diff_from_data_width) < MAX_ALLOWED_PULSE_WIDTH_ERROR) {
+        on_read_data(data);
+        return;
+      }
+    }
+    //If we got to here, then we didn't have valid data
+    Serial.println("Got a bad pulse width, discarding packet");
+    receiving_start_waiting_for_packet();
+    break;
+  }
 }
 
 void on_read_data(int data) {
@@ -248,7 +280,6 @@ void on_read_data(int data) {
 }
 
 void on_read_byte(byte b) {
-
   Serial.print("Got byte ");
   Serial.println((char)b);
   
