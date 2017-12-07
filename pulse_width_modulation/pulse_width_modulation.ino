@@ -26,7 +26,7 @@
 constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 4;
 
 //The pulse for sending 0 will have this width
-#define SHORTEST_PULSE_WIDTH 1
+#define SHORTEST_PULSE_WIDTH 5
 
 //How many bits do we want to convey with a single pulse? Should be a power of 2
 #define BITS_PER_PULSE 2
@@ -295,8 +295,10 @@ void on_read_data(int data) {
 
 void on_read_byte(byte b) {
   Serial.print("Got byte ");
-  Serial.println((char)b);
-  
+  Serial.print((char)b);
+  Serial.print(" (");
+  Serial.print((int)b);
+  Serial.println(")");
   packets.contents[packets.terminator_idx++] = b;
   packets.contents[packets.terminator_idx] = '\0';
   if (packets.terminator_idx == MAX_MESSAGE_BYTECOUNT-1 || b == '\0') {

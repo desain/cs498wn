@@ -27,3 +27,63 @@ Red -> Red, 4 feet, 90, PWM shortest=10 delta=20 delay=20, siebel 0403, 0.11
 
 Red -> Red, 4 feet, 90, PWM shortest=1 delta=20 delay=20, siebel 0403, ~1
     Tended to drop first few bytes
+
+Red -> Red, 3 feet, 90, PWM shortest=1 delta=20 delay=20, siebel 0403, ~1
+    OK bytes: 4
+    Error bytes: 93
+    Same problem, didn't start reading until after a few bytes in, but sometimes got it correct
+
+Red -> Red, 3 feet, 90, PWM shortest=5 delta=20 delay=20, siebel 0403, .56
+    OK bytes: 57
+    Error bytes: 73
+
+Red -> Red, 4 feet, 90, PWM shortest=5 delta=20 delay=20, siebel 0403, .53
+    OK bytes: 89
+    Error bytes: 101
+    Sometimes gets the entire packet correctly
+    Maybe bad with alignment
+
+
+NRZI
+
+Red -> Red, 4 feet, 90, NRZI4b5b sample_gap=100, siebel 0403, 0
+    OK bytes: 70 
+    Error bytes: 0
+
+Red -> Red, 4 feet, 90, NRZI4b5b sample_gap=50, siebel 0403, .08
+    OK bytes: 92 
+    Error bytes: 8
+
+Red -> Red, 4 feet, 90, NRZI4b5b sample_gap=20, siebel 0403, .08
+    OK bytes: 101
+    Error bytes: 9
+    Sometimes will receive the whole packet, but receives as two, with a preamble in between - transmitter sends in two bunches
+
+Red -> Red, 4 feet, 90, NRZI4b5b sample_gap=10, siebel 0403, .41
+    OK bytes: 65
+    Error bytes: 45
+    Loses first few bytes
+
+Red -> Red, 4 feet, 90, NRZI4b5b sample_gap=1, siebel 0403, ~~~~
+    OK bytes: 
+    Error bytes: 
+    too fast
+
+Red -> Red, 3 feet, 90, NRZI4b5b sample_gap=10, siebel 0403, .34
+    OK bytes: 79
+    Error bytes: 41
+    too fast
+
+Red -> Red, 3 feet, 90, NRZI4b5b sample_gap=20, siebel 0403, .09
+    OK bytes: 99
+    Error bytes: 11
+
+Red -> Red, 3 feet, 90, NRZI4b5b sample_gap=50, siebel 0403, .08
+    OK bytes: 110 
+    Error bytes: 10
+    Sender sometimes breaks packet into 2
+
+Red -> Red, 3 feet, 90, NRZI4b5b sample_gap=100, siebel 0403, .08
+    OK bytes: 110 
+    Error bytes: 10
+    Sender sometimes breaks packet into 2
