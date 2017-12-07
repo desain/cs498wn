@@ -1,0 +1,29 @@
+(channel, max dist, threshold, scheme, location, error rate)
+Data:
+Red -> Red, 57 inches, 90, PWM shortest=100 delta=100 delay=100, siebel 0403, 0
+Red -> Red, 57 inches, 90, PWM shortest=50 delta=20 delay=100, siebel 0403, 1/20 BER
+Red -> Red, 3 feet, 90, PWM shortest=50 delta=20 delay=20, siebel 0403, 0
+
+SRS TESTING
+Red -> Red, 4 feet, 90, PWM shortest=50 delta=20 delay=20, siebel 0403, 0.16
+    OK bytes: 66
+    Error bytes: 13
+
+Red -> Red, 4 feet, 90, PWM shortest=20 delta=20 delay=20, siebel 0403, 0.14
+    OK bytes: 69
+    Error bytes: 11
+
+Red -> Red, 3 feet, 90, PWM shortest=20 delta=20 delay=20, siebel 0403, 0.03
+    OK bytes: 90
+    Error bytes: 3
+
+Red -> Red, 3 feet, 90, PWM shortest=10 delta=20 delay=20, siebel 0403, 0.12
+    OK bytes: 93
+    Error bytes: 13
+
+Red -> Red, 4 feet, 90, PWM shortest=10 delta=20 delay=20, siebel 0403, 0.11
+    OK bytes: 89
+    Error bytes: 11
+
+Red -> Red, 4 feet, 90, PWM shortest=1 delta=20 delay=20, siebel 0403, ~1
+    Tended to drop first few bytes

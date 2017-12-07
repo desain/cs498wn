@@ -11,22 +11,22 @@
 /********* IO VARIABLES *********/
 #define INPUT_PIN A0
 #define OUTPUT_LED_PIN 8
-#define ANALOG_READ_THRESHOLD 90
+#define ANALOG_READ_THRESHOLD 85
 
 /******** SENDING VARIABLES ********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
 #define MAX_MESSAGE_BYTECOUNT 10
 
 //Wait this long after finishing one pulse to send the next one
-#define DELAY_BETWEEN_PULSES 100
+#define DELAY_BETWEEN_PULSES 20
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
-#define PULSE_WIDTH_DELTA 100
+#define PULSE_WIDTH_DELTA 20
 //Kinda arbitrary value, but - as we're trying to interpret a received pulse width, how far off from the ideal width of data X do we allow it to be and still interpret it as X?
 constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 4;
 
 //The pulse for sending 0 will have this width
-#define SHORTEST_PULSE_WIDTH 100
+#define SHORTEST_PULSE_WIDTH 1
 
 //How many bits do we want to convey with a single pulse? Should be a power of 2
 #define BITS_PER_PULSE 2
@@ -43,7 +43,7 @@ int lookup_pulse_width[NUM_PULSE_WIDTHS]; //Will be initialized in setup()
 // Serial printing tends to make loops take a lot longer, so let's not use these with short gaps
 #define DEBUG_PRINT_TIME 0
 #define DEBUG_PRINT_SENT_PULSES 0
-#define DEBUG_PRINT_RECEIVED_BITS_AND_HILOS 0
+#define DEBUG_PRINT_RECEIVED_PULSES 0
 #define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 0
 
 unsigned long current_time;
@@ -85,8 +85,9 @@ enum receiving_message_state {
 
 struct receiving {
   unsigned long cur_pulse_start_time;
-  unsigned long debounce_cur_pulse_tentative_end_time;
+  unsigned long debounce_cur_pulse_end_time;
   int debounce_num_lows_read;
+  int debounce_num_highs_read;
   enum receiving_pulse_state pulse_state;
   enum receiving_message_state message_state;
 } receiving;
@@ -183,7 +184,6 @@ void loop() {
       break;
     }
     case SENDING_PULSE:
-      Serial.println("sending pulse state");
       //We just finished sending a pulse.
       digitalWrite(OUTPUT_LED_PIN, LOW);
       //Will there be a next pulse?
@@ -218,8 +218,17 @@ void loop() {
   switch (receiving.pulse_state) {
   case WAITING_FOR_PULSE:
     if (hilo) {
+      if (receiving.debounce_num_highs_read == 0) {
+        //Set the start time to the time of the first loop iteration where we receive a HIGH
+        receiving.cur_pulse_start_time = current_time;
+      }
+      receiving.debounce_num_highs_read++;
+    } else {
+      receiving.debounce_num_highs_read = 0;
+    }
+
+    if (receiving.debounce_num_highs_read > DEBOUNCE_THRESHOLD) {
       receiving.pulse_state = RECEIVING_PULSE;
-      receiving.cur_pulse_start_time = current_time;
       receiving.debounce_num_lows_read = 0;
     }
     break;
@@ -227,21 +236,26 @@ void loop() {
     if (hilo) {
       receiving.debounce_num_lows_read = 0;
     } else {
-      receiving.debounce_cur_pulse_tentative_end_time = current_time;
+      if (receiving.debounce_num_lows_read == 0) {
+        //Set the end time to the time of the first loop iteration where we receive a LOW
+        receiving.debounce_cur_pulse_end_time = current_time;
+      }
       receiving.debounce_num_lows_read++;
     }
 
     if (receiving.debounce_num_lows_read > DEBOUNCE_THRESHOLD) {
       receiving.pulse_state = WAITING_FOR_PULSE;
-      unsigned long pulse_width = receiving.debounce_cur_pulse_tentative_end_time - receiving.cur_pulse_start_time;
+      unsigned long pulse_width = receiving.debounce_cur_pulse_end_time - receiving.cur_pulse_start_time;
       on_read_pulse(pulse_width);
     }
   }
 }
 
 void on_read_pulse(int width) {
+  #if DEBUG_PRINT_RECEIVED_PULSES == 1
   Serial.print("Got a pulse of width ");
   Serial.println(width, DEC);
+  #endif
 
   switch (receiving.message_state) {
   case WAITING_FOR_PREAMBLE: {
