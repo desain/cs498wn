@@ -8,6 +8,7 @@
 /********* IO VARIABLES *********/
 #define INPUT_PIN A0
 #define OUTPUT_LED_PIN 8
+#define OUTPUT_LED_PIN_TWO 9
 #define ANALOG_READ_THRESHOLD 90
 
 /********* SENDING VARIABLES *********/
@@ -133,6 +134,8 @@ void setup() {
 
   //////////// Setup sending ////////////
   pinMode(OUTPUT_LED_PIN, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_TWO, OUTPUT);
+
   sending.waiting_for_sending_data = true;
   sending.next_send_time = SAMPLE_GAP_MILLIS;
 
@@ -221,6 +224,8 @@ void sending_send_next_bit() {
   Serial.println();
   #endif
   digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
+  digitalWrite(OUTPUT_LED_PIN_TWO, cur_hilo ? HIGH : LOW);
+
   sending.bits_sent_in_5b_block++;
 
   if (sending.bits_sent_in_5b_block == 5) {
@@ -363,7 +368,7 @@ void on_read_hilo(bool hilo) {
 void on_read_block(byte five_bit_block) {
   int four_bit_block = lookup5b[five_bit_block];
   if (four_bit_block == -1) {
-    Serial.print("Got a bad block, marking packet as lost\n");
+    //Serial.print("Got a bad block, marking packet as lost\n");
     receiving_start_waiting_for_packet();
   } else {
     Serial.print("Got 4 bit block ");

@@ -87,3 +87,95 @@ Red -> Red, 3 feet, 90, NRZI4b5b sample_gap=100, siebel 0403, .08
     OK bytes: 110 
     Error bytes: 10
     Sender sometimes breaks packet into 2
+
+
+
+
+=================BLUE TO GREEN====================
+Threshold = ???
+
+Blue -> Green, 3 feet, 90, PWM shortest=50 delta=20 delay=20, siebel 0403, 0
+
+
+Blue -> Green, 4 feet, 90, PWM shortest=50 delta=20 delay=20, siebel 0403, 0.16
+    OK bytes: 66
+    Error bytes: 13
+
+Blue -> Green, 4 feet, 90, PWM shortest=20 delta=20 delay=20, siebel 0403, 0.14
+    OK bytes: 69
+    Error bytes: 11
+
+Blue -> Green, 3 feet, 90, PWM shortest=20 delta=20 delay=20, siebel 0403, 0.03
+    OK bytes: 90
+    Error bytes: 3
+
+Blue -> Green, 3 feet, 90, PWM shortest=10 delta=20 delay=20, siebel 0403, 0.12
+    OK bytes: 93
+    Error bytes: 13
+
+Blue -> Green, 4 feet, 90, PWM shortest=10 delta=20 delay=20, siebel 0403, 0.11
+    OK bytes: 89
+    Error bytes: 11
+
+Blue -> Green, 4 feet, 90, PWM shortest=1 delta=20 delay=20, siebel 0403, ~1
+    Tended to drop first few bytes
+
+Blue -> Green, 3 feet, 90, PWM shortest=1 delta=20 delay=20, siebel 0403, ~1
+    OK bytes: 4
+    Error bytes: 93
+    Same problem, didn't start reading until after a few bytes in, but sometimes got it correct
+
+Blue -> Green, 3 feet, 90, PWM shortest=5 delta=20 delay=20, siebel 0403, .56
+    OK bytes: 57
+    Error bytes: 73
+
+Blue -> Green, 4 feet, 90, PWM shortest=5 delta=20 delay=20, siebel 0403, .53
+    OK bytes: 89
+    Error bytes: 101
+    Sometimes gets the entire packet correctly
+    Maybe bad with alignment
+
+
+NRZI
+
+Blue -> Green, 4 feet, 90, NRZI4b5b sample_gap=100, siebel 0403, 0
+    OK bytes: 70 
+    Error bytes: 0
+
+Blue -> Green, 4 feet, 90, NRZI4b5b sample_gap=50, siebel 0403, .08
+    OK bytes: 92 
+    Error bytes: 8
+
+Blue -> Green, 4 feet, 90, NRZI4b5b sample_gap=20, siebel 0403, .08
+    OK bytes: 101
+    Error bytes: 9
+    Sometimes will receive the whole packet, but receives as two, with a preamble in between - transmitter sends in two bunches
+
+Blue -> Green, 4 feet, 90, NRZI4b5b sample_gap=10, siebel 0403, .41
+    OK bytes: 65
+    Error bytes: 45
+    Loses first few bytes
+
+Blue -> Green, 4 feet, 90, NRZI4b5b sample_gap=1, siebel 0403, ~~~~
+    OK bytes: 
+    Error bytes: 
+    too fast
+
+Blue -> Green, 3 feet, 90, NRZI4b5b sample_gap=10, siebel 0403, .34
+    OK bytes: 79
+    Error bytes: 41
+    too fast
+
+Blue -> Green, 3 feet, 90, NRZI4b5b sample_gap=20, siebel 0403, .09
+    OK bytes: 99
+    Error bytes: 11
+
+Blue -> Green, 3 feet, 90, NRZI4b5b sample_gap=50, siebel 0403, .08
+    OK bytes: 110 
+    Error bytes: 10
+    Sender sometimes breaks packet into 2
+
+Blue -> Green, 3 feet, 90, NRZI4b5b sample_gap=100, siebel 0403, .08
+    OK bytes: 110 
+    Error bytes: 10
+    Sender sometimes breaks packet into 2

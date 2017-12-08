@@ -4,10 +4,15 @@
 #define OUTPUT_LED_PIN_TWO 9
 #define OUTPUT_LED_PIN_THREE 7
 #define OUTPUT_LED_PIN_FOUR 10
+#define LEDS_ON 0
+
 
 /*
- * Green off: Mean: 96.49 STD: 16.79
- * Green on: Mean: 250.58 STD: 6.31
+ * Distance: 53.75 inches
+ * Green off: Mean: 95.15 STD: 14.61
+ * 
+
+ * Green on: 
  */
 
 /*
@@ -25,11 +30,12 @@ void setup() {
   pinMode(OUTPUT_LED_PIN_THREE, OUTPUT);
   pinMode(OUTPUT_LED_PIN_FOUR, OUTPUT);
 
+  #if LEDS_ON == 1
   digitalWrite(OUTPUT_LED_PIN, HIGH);
   digitalWrite(OUTPUT_LED_PIN_TWO, HIGH);
   digitalWrite(OUTPUT_LED_PIN_THREE, HIGH);
   digitalWrite(OUTPUT_LED_PIN_FOUR, HIGH);
-
+  #endif
 }
 
 float calculate_mean()
