@@ -9,7 +9,15 @@
 #define INPUT_PIN A0
 #define OUTPUT_LED_PIN 8
 #define OUTPUT_LED_PIN_TWO 9
-#define ANALOG_READ_THRESHOLD 90
+#define OUTPUT_LED_PIN_THREE 8
+#define OUTPUT_LED_PIN_FOUR 9
+#define OUTPUT_LED_PIN_FIVE 8
+#define OUTPUT_LED_PIN_SIX 9
+#define OUTPUT_LED_PIN_SEVEN 9
+/********BLUE RECEIVER***********/
+//#define ANALOG_READ_THRESHOLD 185
+/********RED RECEIVER************/
+#define ANALOG_READ_THRESHOLD 170
 
 /********* SENDING VARIABLES *********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
@@ -126,6 +134,17 @@ struct packets {
   char contents[MAX_MESSAGE_BYTECOUNT];
 } packets;
 
+void digitalWriteAll(int state)
+{
+  digitalWrite(OUTPUT_LED_PIN, state);
+  digitalWrite(OUTPUT_LED_PIN_TWO, state);
+  digitalWrite(OUTPUT_LED_PIN_THREE, state);
+  digitalWrite(OUTPUT_LED_PIN_FOUR, state);
+  digitalWrite(OUTPUT_LED_PIN_FIVE, state);
+  digitalWrite(OUTPUT_LED_PIN_SIX, state);
+  digitalWrite(OUTPUT_LED_PIN_SEVEN, state);
+}
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(INPUT_PIN, INPUT);
@@ -135,6 +154,11 @@ void setup() {
   //////////// Setup sending ////////////
   pinMode(OUTPUT_LED_PIN, OUTPUT);
   pinMode(OUTPUT_LED_PIN_TWO, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_THREE, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_FOUR, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_FIVE, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_SIX, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_SEVEN, OUTPUT);
 
   sending.waiting_for_sending_data = true;
   sending.next_send_time = SAMPLE_GAP_MILLIS;
@@ -223,8 +247,7 @@ void sending_send_next_bit() {
   Serial.print(sending.message[sending.cur_message_idx]);
   Serial.println();
   #endif
-  digitalWrite(OUTPUT_LED_PIN, cur_hilo ? HIGH : LOW);
-  digitalWrite(OUTPUT_LED_PIN_TWO, cur_hilo ? HIGH : LOW);
+  digitalWriteAll(cur_hilo ? HIGH : LOW);
 
   sending.bits_sent_in_5b_block++;
 

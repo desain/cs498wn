@@ -1,0 +1,161 @@
+Green off:
+	1. Mean: 178.26 STD: 24.19
+	2. Mean: 178.10 STD: 21.49
+	3. Mean: 177.52 STD: 20.27
+	4. Mean: 177.34 STD: 20.73
+	5. Mean: 176.20 STD: 21.97
+
+Distance: 0, flashlight
+Green on:
+	1. Mean: 226.05 STD: 12.68
+	2. Mean: 211.87 STD: 15.43
+	3. Mean: 212.20 STD: 15.53
+	4. Mean: 199.99 STD: 16.59
+	5. Mean: 226.48 STD: 11.25
+
+Distance: 0, blue light
+Green on:
+	1. Mean: 219.32 STD: 14.89
+	2. Mean: 220.57 STD: 14.07
+	3. Mean: 222.88 STD: 13.34
+	4. Mean: 229.70 STD: 10.84
+	5. Mean: 229.20 STD: 11.33
+
+Testing Green off now gives a std of over 50, same mean, seems like
+running the circuit a while heats it up, more noise.
+
+Distance: 1 ft, blue light
+Green on:
+	1. Mean: 179.47 STD: 43.89
+	2. Mean: 178.06 STD: 46.05
+	3. Mean: 178.01 STD: 48.98
+	4. Mean: 179.46 STD: 50.45
+	5. Mean: 177.28 STD: 56.04 
+
+Distance: 0 ft, blue light
+Blue on: 
+	1. Mean: 230.39 STD: 15.35
+	2. Mean: 231.21 STD: 20.13
+	3. Mean: 231.24 STD: 19.57
+	4. Mean: 230.20 STD: 19.77
+	5. Mean: 230.83 STD: 13.61
+
+Blue to blue is more sensitive
+
+
+Distance 1 ft, blue light
+Blue on:
+	1. Mean: 230.83 STD: 13.61
+	2. Mean: 177.13 STD: 49.96
+	3. Mean: 175.43 STD: 49.91
+	4. Mean: 179.08 STD: 49.13
+	5. Mean: 178.56 STD: 50.33
+
+Distance: 1 ft, no light
+Blue off:
+	1. Mean: 176.58 STD: 54.47
+	2. Mean: 176.23 STD: 58.24
+	3. Mean: 173.09 STD: 55.32
+	4. Mean: 175.66 STD: 55.69
+	5. Mean: 174.01 STD: 54.81
+
+Blue doesn't seem to be strong enough to be a sender/receiver, testing 
+green to green now instead
+
+Distance: 0 ft, gree light
+Green on:
+	1. Mean: 176.69 STD: 51.38
+	2. Mean: 178.23 STD: 64.85
+	3. Mean: 176.99 STD: 56.07
+	4. Mean: 170.36 STD: 63.86
+	5. Mean: 176.24 STD: 56.59
+
+Doesn't recognize the green light at all. Has to be blue-green
+
+Added a big 10 mm led, blue receiver
+Distance: 1 ft
+Blue on:
+	1. Mean: 191.20 STD: 42.20
+	2. Mean: 189.65 STD: 45.56
+	3. Mean: 190.14 STD: 42.77
+	4. Mean: 190.75 STD: 43.40
+	5. Mean: 188.05 STD: 43.78
+
+Blue off:
+	1. Mean: 181.79 STD: 52.84
+	2. Mean: 179.29 STD: 56.84
+	3. Mean: 182.04 STD: 55.30
+	4. Mean: 179.88 STD: 53.51
+
+There is a ~10 difference, adding another big 10 mm led
+Distance: 1 ft
+Blue on: 
+	1. Mean: 192.25 STD: 42.14
+	2. Mean: 192.03 STD: 43.82
+	3. Mean: 191.74 STD: 43.65
+	4. Mean: 191.26 STD: 43.71
+	5. Mean: 193.71 STD: 40.39
+
+Green on:
+	1. Mean: 189.00 STD: 39.59
+	2. Mean: 187.45 STD: 37.54
+	3. Mean: 187.93 STD: 36.66
+	4. Mean: 189.48 STD: 38.35
+	5. Mean: 188.67 STD: 37.62
+
+Turned off a table lamp near me, the STD went down for green, also blue. Trying with no ambient light
+
+Distance: 1 ft
+Blue on:
+	1. Mean: 191.21 STD: 42.66
+	2. Mean: 190.02 STD: 40.33
+	3. Mean: 192.23 STD: 40.94
+	4. Mean: 190.08 STD: 44.75
+	5. Mean: 188.47 STD: 43.36
+
+It didn't change anything. Seems like green has less of a standard deviation. Added one more 10 mm led
+
+Distance: 1 ft
+Blue on:
+	1. Mean: 187.58 STD: 43.13
+	2. Mean: 187.85 STD: 44.11
+	3. Mean: 189.97 STD: 43.17
+	4. Mean: 190.31 STD: 42.20
+	5. Mean: 190.98 STD: 43.06
+
+Green on:
+	1. Mean: 176.95 STD: 40.04
+	2. Mean: 175.08 STD: 39.80
+	3. Mean: 175.68 STD: 42.66
+	4. Mean: 176.63 STD: 41.40
+	5. Mean: 177.89 STD: 39.63
+
+Green off: 
+	1. Mean: 176.78 STD: 48.51
+	2. Mean: 177.71 STD: 54.14
+	3. Mean: 174.53 STD: 53.96
+	4. Mean: 171.33 STD: 63.13
+	5. Mean: 170.81 STD: 61.01
+
+Blue off: 
+	1. Mean: 180.73 STD: 55.57
+	2. Mean: 177.90 STD: 69.23
+	3. Mean: 178.27 STD: 69.78
+	4. Mean: 178.63 STD: 57.30
+	5. Mean: 179.69 STD: 57.70
+
+It seems light from laptop screen is affecting it.
+
+Red Receiver
+
+Distance: 3 ft
+Red off: 	
+	1. Mean: 130.86 STD: 29.18
+	2. Mean: 131.39 STD: 29.64
+	3. Mean: 131.24 STD: 30.28
+
+Red on:
+	1. Mean: 164.17 STD: 17.78
+	2. Mean: 163.83 STD: 17.47
+	3. Mean: 164.92 STD: 16.96
+ 
