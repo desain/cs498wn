@@ -22,22 +22,22 @@
 /*********BLUE RECEIVER THRESHOLD*********/
 #define ANALOG_READ_THRESHOLD 185
 /*********RED RECEIVER THRESHOLD**********/
-//#define ANALOG_READ_THRESHOLD 170
+//#define ANALOG_READ_THRESHOLD 220
 
 /******** SENDING VARIABLES ********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
-#define MAX_MESSAGE_BYTECOUNT 10
+#define MAX_MESSAGE_BYTECOUNT 100
 
 //Wait this long after finishing one pulse to send the next one
 #define DELAY_BETWEEN_PULSES 20
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
-#define PULSE_WIDTH_DELTA 100
+#define PULSE_WIDTH_DELTA 50
 //Kinda arbitrary value, but - as we're trying to interpret a received pulse width, how far off from the ideal width of data X do we allow it to be and still interpret it as X?
 constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 4;
 
 //The pulse for sending 0 will have this width
-#define SHORTEST_PULSE_WIDTH 1000
+#define SHORTEST_PULSE_WIDTH 100
 
 //How many bits do we want to convey with a single pulse? Should be a power of 2
 #define BITS_PER_PULSE 2
@@ -241,6 +241,7 @@ void loop() {
         if (sending.cur_message_idx == sending.cur_message_bytecount - 1 && sending.num_pulses_sent_for_cur_byte == PULSES_PER_BYTE) {
           //We just sent the last pulse in the message. Wait for a new message.
           sending.state = WAITING_FOR_DATA_TO_SEND;
+          sending.next_tick_time = current_time + DELAY_BETWEEN_PULSES;
         } else {
           //There will be another one
           sending.state = WAITING_TO_SEND_NEXT_PULSE;
@@ -352,7 +353,7 @@ void on_read_byte(byte b) {
     packets.terminator_idx = 0;
     packets.contents[0] = '\0';
     // We finished receiving a packet, so go back to waiting for the preamble
-    //receiving_start_waiting_for_packet();
+    receiving_start_waiting_for_packet();
   }
 }
 
