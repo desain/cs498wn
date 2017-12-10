@@ -7,7 +7,7 @@
    of width 600?
  ******************************************************************/
 /********* TESTING VARIABLES **********/
-#define TESTING_PRINT 0
+#define TESTING_PRINT 1
 
 
 /********* IO VARIABLES *********/
@@ -16,7 +16,13 @@
 #define OUTPUT_LED_PIN_TWO 9
 #define OUTPUT_LED_PIN_THREE 7
 #define OUTPUT_LED_PIN_FOUR 10
-#define ANALOG_READ_THRESHOLD 200
+#define OUTPUT_LED_PIN_FIVE 6
+#define OUTPUT_LED_PIN_SIX 5
+#define OUTPUT_LED_PIN_SEVEN 4
+/*********BLUE RECEIVER THRESHOLD*********/
+//#define ANALOG_READ_THRESHOLD 185
+/*********RED RECEIVER THRESHOLD**********/
+#define ANALOG_READ_THRESHOLD 170
 
 /******** SENDING VARIABLES ********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
@@ -52,6 +58,7 @@ int lookup_pulse_width[NUM_PULSE_WIDTHS]; //Will be initialized in setup()
 #define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 0
 
 unsigned long current_time;
+unsigned long next_send_time_test = 0;
 
 enum sending_state {
   WAITING_FOR_DATA_TO_SEND,
@@ -73,10 +80,7 @@ void sending_send_pulse(int width) {
   Serial.print("Sending a pulse of width ");
   Serial.println(width, DEC);
 #endif
-  digitalWrite(OUTPUT_LED_PIN, HIGH);
-  digitalWrite(OUTPUT_LED_PIN_TWO, HIGH);
-  digitalWrite(OUTPUT_LED_PIN_THREE, HIGH);
-  digitalWrite(OUTPUT_LED_PIN_FOUR, HIGH);
+  digitalWriteAll(HIGH);
   sending.next_tick_time = current_time + width;
   sending.state = SENDING_PULSE;
 }
@@ -130,6 +134,9 @@ void setup() {
   pinMode(OUTPUT_LED_PIN_TWO, OUTPUT);
   pinMode(OUTPUT_LED_PIN_THREE, OUTPUT);
   pinMode(OUTPUT_LED_PIN_FOUR, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_FIVE, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_SIX, OUTPUT);
+  pinMode(OUTPUT_LED_PIN_SEVEN, OUTPUT);
 
   sending.state = WAITING_FOR_DATA_TO_SEND;
   sending.next_tick_time = 0;
@@ -163,6 +170,17 @@ void debug_print_time() {
 #endif
 }
 
+void digitalWriteAll(int state)
+{
+  digitalWrite(OUTPUT_LED_PIN, state);
+  digitalWrite(OUTPUT_LED_PIN_TWO, state);
+  digitalWrite(OUTPUT_LED_PIN_THREE, state);
+  digitalWrite(OUTPUT_LED_PIN_FOUR, state);
+  digitalWrite(OUTPUT_LED_PIN_FIVE, state);
+  digitalWrite(OUTPUT_LED_PIN_SIX, state);
+  digitalWrite(OUTPUT_LED_PIN_SEVEN, state);
+}
+
 void loop() {
   current_time = millis();
 
@@ -173,17 +191,19 @@ void loop() {
       case WAITING_FOR_DATA_TO_SEND: {
           int bytes_waiting = Serial.available();
 #if TESTING_PRINT == 1
-          delay(10000);
-          bytes_waiting = 10;
-          for (int i = 0; i < bytes_waiting; i++) {
-            sending.message[i] = (int)'a' + i;
+          if (current_time >= next_send_time_test) {
+            bytes_waiting = 10;
+            for (int i = 0; i < bytes_waiting; i++) {
+              sending.message[i] = (int)'a' + i;
+            }
+            sending.message[bytes_waiting] = '\0';
+            sending.cur_message_bytecount = bytes_waiting + 1;
+            sending_send_pulse(PREAMBLE_PULSE_WIDTH);
+            //Act like we just finished sending the -1st byte in the message
+            sending.cur_message_idx = -1;
+            sending.num_pulses_sent_for_cur_byte = PULSES_PER_BYTE;
+            next_send_time_test = current_time + 10000;
           }
-          sending.message[bytes_waiting] = '\0';
-          sending.cur_message_bytecount = bytes_waiting + 1;
-          sending_send_pulse(PREAMBLE_PULSE_WIDTH);
-          //Act like we just finished sending the -1st byte in the message
-          sending.cur_message_idx = -1;
-          sending.num_pulses_sent_for_cur_byte = PULSES_PER_BYTE;
 #endif
           if (bytes_waiting > 0) {
             if (bytes_waiting >= MAX_MESSAGE_BYTECOUNT) {
@@ -212,10 +232,7 @@ void loop() {
       case SENDING_PULSE:
         //  Serial.println("sending pulse state");
         //We just finished sending a pulse.
-        digitalWrite(OUTPUT_LED_PIN, LOW);
-        digitalWrite(OUTPUT_LED_PIN_TWO, LOW);
-        digitalWrite(OUTPUT_LED_PIN_THREE, LOW);
-        digitalWrite(OUTPUT_LED_PIN_FOUR, LOW);
+        digitalWriteAll(LOW);
 
         //Will there be a next pulse?
         if (sending.cur_message_idx == sending.cur_message_bytecount - 1 && sending.num_pulses_sent_for_cur_byte == PULSES_PER_BYTE) {
@@ -245,7 +262,7 @@ void loop() {
   ////////////// RECEIVING /////////////////
 
   bool hilo = analogRead(INPUT_PIN) > ANALOG_READ_THRESHOLD;
-  Serial.println(hilo);
+  //Serial.println(hilo);
   switch (receiving.pulse_state) {
     case WAITING_FOR_PULSE:
       if (hilo) {
@@ -271,7 +288,7 @@ void loop() {
 }
 
 void on_read_pulse(int width) {
-  Serial.print("Got a pulse of width ");
+//  Serial.print("Got a pulse of width ");
   Serial.println(width, DEC);
 
   switch (receiving.message_state) {
