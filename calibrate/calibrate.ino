@@ -7,13 +7,18 @@
 #define OUTPUT_LED_PIN_FIVE 6
 #define OUTPUT_LED_PIN_SIX 5
 #define OUTPUT_LED_PIN_SEVEN 4
-#define LEDS_ON 0
+#define LEDS_ON 1
 
 
 /*
- * Green off: Mean: 178.26 STD: 24.19
+ * Red off: Min: 155 Max: 214
+Mean: 182.72 STD: 15.78
+Min: 166 Max: 218
+Mean: 190.36 STD: 15.59
 
- * Green on:  Mean: 213.32 STD: 15.64
+Min: 226 Max: 248
+Mean: 235.04 STD: 6.27
+
 
  */
 
@@ -55,9 +60,13 @@ float calculate_mean()
     mean += samples[i];
     if (samples[i] > maximum)
       maximum = samples[i];
-    if samples[i] < minimum)
+    if (samples[i] < minimum)
       minimum = samples[i];
   }
+  Serial.print("Min: ");
+  Serial.print(minimum);
+  Serial.print(" Max: ");
+  Serial.println(maximum);
   return mean / NUM_SAMPS;
 }
 
