@@ -7,7 +7,7 @@
    of width 600?
  ******************************************************************/
 /********* TESTING VARIABLES **********/
-#define TESTING_PRINT 1
+#define TESTING_PRINT 0
 
 
 /********* IO VARIABLES *********/
@@ -20,9 +20,9 @@
 #define OUTPUT_LED_PIN_SIX 5
 #define OUTPUT_LED_PIN_SEVEN 4
 /*********BLUE RECEIVER THRESHOLD*********/
-//#define ANALOG_READ_THRESHOLD 185
+#define ANALOG_READ_THRESHOLD 185
 /*********RED RECEIVER THRESHOLD**********/
-#define ANALOG_READ_THRESHOLD 170
+//#define ANALOG_READ_THRESHOLD 170
 
 /******** SENDING VARIABLES ********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
@@ -32,12 +32,12 @@
 #define DELAY_BETWEEN_PULSES 20
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
-#define PULSE_WIDTH_DELTA 20
+#define PULSE_WIDTH_DELTA 100
 //Kinda arbitrary value, but - as we're trying to interpret a received pulse width, how far off from the ideal width of data X do we allow it to be and still interpret it as X?
 constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 4;
 
 //The pulse for sending 0 will have this width
-#define SHORTEST_PULSE_WIDTH 100
+#define SHORTEST_PULSE_WIDTH 1000
 
 //How many bits do we want to convey with a single pulse? Should be a power of 2
 #define BITS_PER_PULSE 2
@@ -53,7 +53,7 @@ int lookup_pulse_width[NUM_PULSE_WIDTHS]; //Will be initialized in setup()
 /******* PRINT DEBUGGING VARIABLES *******/
 // Serial printing tends to make loops take a lot longer, so let's not use these with short gaps
 #define DEBUG_PRINT_TIME 0
-#define DEBUG_PRINT_SENT_PULSES 0
+#define DEBUG_PRINT_SENT_PULSES 1
 #define DEBUG_PRINT_RECEIVED_BITS_AND_HILOS 0
 #define DEBUG_PRINT_RECEIVED_HILOS_EVERY_ITER 0
 
@@ -97,8 +97,9 @@ enum receiving_message_state {
 
 struct receiving {
   unsigned long cur_pulse_start_time;
-  unsigned long debounce_cur_pulse_tentative_end_time;
+  unsigned long debounce_cur_pulse_end_time;
   int debounce_num_lows_read;
+  int debounce_num_highs_read;
   enum receiving_pulse_state pulse_state;
   enum receiving_message_state message_state;
 } receiving;
@@ -192,10 +193,12 @@ void loop() {
           int bytes_waiting = Serial.available();
 #if TESTING_PRINT == 1
           if (current_time >= next_send_time_test) {
-            bytes_waiting = 10;
-            for (int i = 0; i < bytes_waiting; i++) {
-              sending.message[i] = (int)'a' + i;
-            }
+            bytes_waiting = 2;
+            sending.message[0] = 'h';
+            sending.message[1] = 'i';
+            //for (int i = 0; i < bytes_waiting; i++) {
+            //  sending.message[i] = (int)'a' + i;
+            //}
             sending.message[bytes_waiting] = '\0';
             sending.cur_message_bytecount = bytes_waiting + 1;
             sending_send_pulse(PREAMBLE_PULSE_WIDTH);
@@ -266,8 +269,16 @@ void loop() {
   switch (receiving.pulse_state) {
     case WAITING_FOR_PULSE:
       if (hilo) {
+        if (receiving.debounce_num_highs_read == 0) {
+          receiving.cur_pulse_start_time = current_time;
+        }
+        receiving.debounce_num_highs_read++;
+      } else {
+        receiving.debounce_num_highs_read = 0;
+      }
+
+      if (receiving.debounce_num_highs_read > DEBOUNCE_THRESHOLD) {
         receiving.pulse_state = RECEIVING_PULSE;
-        receiving.cur_pulse_start_time = current_time;
         receiving.debounce_num_lows_read = 0;
       }
       break;
@@ -275,13 +286,15 @@ void loop() {
       if (hilo) {
         receiving.debounce_num_lows_read = 0;
       } else {
-        receiving.debounce_cur_pulse_tentative_end_time = current_time;
+        if (receiving.debounce_num_lows_read == 0) {
+          receiving.debounce_cur_pulse_end_time = current_time;
+        }
         receiving.debounce_num_lows_read++;
       }
 
       if (receiving.debounce_num_lows_read > DEBOUNCE_THRESHOLD) {
         receiving.pulse_state = WAITING_FOR_PULSE;
-        unsigned long pulse_width = receiving.debounce_cur_pulse_tentative_end_time - receiving.cur_pulse_start_time;
+        unsigned long pulse_width = receiving.debounce_cur_pulse_end_time - receiving.cur_pulse_start_time;
         on_read_pulse(pulse_width);
       }
   }
