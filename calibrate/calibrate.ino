@@ -7,17 +7,22 @@
 #define OUTPUT_LED_PIN_FIVE 6
 #define OUTPUT_LED_PIN_SIX 5
 #define OUTPUT_LED_PIN_SEVEN 4
-#define LEDS_ON 1
+#define LEDS_ON 0
 
 
 /*
- * Red off: Min: 155 Max: 214
-Mean: 182.72 STD: 15.78
-Min: 166 Max: 218
-Mean: 190.36 STD: 15.59
+ * Red on:
+Min: 182 Max: 250
+Mean: 211.36 STD: 16.86
+Min: 180 Max: 240
+Mean: 210.22 STD: 16.88
 
-Min: 226 Max: 248
-Mean: 235.04 STD: 6.27
+Red off:
+Min: 157 Max: 219
+Mean: 186.74 STD: 17.05
+Min: 135 Max: 230
+Mean: 167.76 STD: 28.84
+
 
 
  */

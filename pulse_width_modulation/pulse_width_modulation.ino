@@ -9,7 +9,6 @@
 /********* TESTING VARIABLES **********/
 #define TESTING_PRINT 0
 
-
 /********* IO VARIABLES *********/
 #define INPUT_PIN A0
 #define OUTPUT_LED_PIN 8
@@ -20,21 +19,21 @@
 #define OUTPUT_LED_PIN_SIX 5
 #define OUTPUT_LED_PIN_SEVEN 4
 /*********BLUE RECEIVER THRESHOLD*********/
-#define ANALOG_READ_THRESHOLD 185
+#define ANALOG_READ_THRESHOLD 165
 /*********RED RECEIVER THRESHOLD**********/
-//#define ANALOG_READ_THRESHOLD 220
+//#define ANALOG_READ_THRESHOLD 185
 
 /******** SENDING VARIABLES ********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
 #define MAX_MESSAGE_BYTECOUNT 100
 
 //Wait this long after finishing one pulse to send the next one
-#define DELAY_BETWEEN_PULSES 20
+#define DELAY_BETWEEN_PULSES 40
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
-#define PULSE_WIDTH_DELTA 50
+#define PULSE_WIDTH_DELTA 100
 //Kinda arbitrary value, but - as we're trying to interpret a received pulse width, how far off from the ideal width of data X do we allow it to be and still interpret it as X?
-constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 4;
+constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 2;
 
 //The pulse for sending 0 will have this width
 #define SHORTEST_PULSE_WIDTH 100
@@ -48,7 +47,7 @@ constexpr int PREAMBLE_PULSE_WIDTH = SHORTEST_PULSE_WIDTH + NUM_PULSE_WIDTHS * P
 int lookup_pulse_width[NUM_PULSE_WIDTHS]; //Will be initialized in setup()
 
 /********* RECEIVING VARIABLES ********/
-#define DEBOUNCE_THRESHOLD 10
+#define DEBOUNCE_THRESHOLD 20
 
 /******* PRINT DEBUGGING VARIABLES *******/
 // Serial printing tends to make loops take a lot longer, so let's not use these with short gaps
@@ -205,9 +204,10 @@ void loop() {
             //Act like we just finished sending the -1st byte in the message
             sending.cur_message_idx = -1;
             sending.num_pulses_sent_for_cur_byte = PULSES_PER_BYTE;
-            next_send_time_test = current_time + 10000;
+            next_send_time_test = current_time + (PREAMBLE_PULSE_WIDTH+DELAY_BETWEEN_PULSES)*(bytes_waiting+10);
+            bytes_waiting = 0;
           }
-#endif
+#else
           if (bytes_waiting > 0) {
             if (bytes_waiting >= MAX_MESSAGE_BYTECOUNT) {
               bytes_waiting = MAX_MESSAGE_BYTECOUNT - 1;
@@ -230,6 +230,7 @@ void loop() {
           } else {
             sending.next_tick_time = current_time + DELAY_BETWEEN_PULSES; //we don't want to check for serial data too fast
           }
+#endif
           break;
         }
       case SENDING_PULSE:
@@ -302,7 +303,7 @@ void loop() {
 }
 
 void on_read_pulse(int width) {
-//  Serial.print("Got a pulse of width ");
+  Serial.print("Got a pulse of width ");
   Serial.println(width, DEC);
 
   switch (receiving.message_state) {
