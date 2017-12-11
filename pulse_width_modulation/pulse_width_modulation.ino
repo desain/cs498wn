@@ -28,10 +28,10 @@
 #define MAX_MESSAGE_BYTECOUNT 100
 
 //Wait this long after finishing one pulse to send the next one
-#define DELAY_BETWEEN_PULSES 40
+#define DELAY_BETWEEN_PULSES 20
 
 //The difference between a pulse width for one bit sequence (eg 00) and the pulse width for the next bit sequence (eg 01)
-#define PULSE_WIDTH_DELTA 100
+#define PULSE_WIDTH_DELTA 20
 //Kinda arbitrary value, but - as we're trying to interpret a received pulse width, how far off from the ideal width of data X do we allow it to be and still interpret it as X?
 constexpr int MAX_ALLOWED_PULSE_WIDTH_ERROR = PULSE_WIDTH_DELTA / 2;
 
@@ -47,7 +47,7 @@ constexpr int PREAMBLE_PULSE_WIDTH = SHORTEST_PULSE_WIDTH + NUM_PULSE_WIDTHS * P
 int lookup_pulse_width[NUM_PULSE_WIDTHS]; //Will be initialized in setup()
 
 /********* RECEIVING VARIABLES ********/
-#define DEBOUNCE_THRESHOLD 20
+#define DEBOUNCE_THRESHOLD 10
 
 /******* PRINT DEBUGGING VARIABLES *******/
 // Serial printing tends to make loops take a lot longer, so let's not use these with short gaps

@@ -1,23 +1,23 @@
 /******** TIMING VARIABLES ********/
 // A lower sample gap means we need a higher delay
 // Combinations of values that work: gap=300, delay=1; gap=100, delay=10
-#define SAMPLE_GAP_MILLIS 100
+#define SAMPLE_GAP_MILLIS 200
 #define FUDGE 10
 #define DECAY 10
 
 /********* IO VARIABLES *********/
 #define INPUT_PIN A0
-#define OUTPUT_LED_PIN 8
-#define OUTPUT_LED_PIN_TWO 9
-#define OUTPUT_LED_PIN_THREE 8
-#define OUTPUT_LED_PIN_FOUR 9
+#define OUTPUT_LED_PIN 4
+#define OUTPUT_LED_PIN_TWO 5
+#define OUTPUT_LED_PIN_THREE 6
+#define OUTPUT_LED_PIN_FOUR 7
 #define OUTPUT_LED_PIN_FIVE 8
 #define OUTPUT_LED_PIN_SIX 9
-#define OUTPUT_LED_PIN_SEVEN 9
+#define OUTPUT_LED_PIN_SEVEN 10
 /********BLUE RECEIVER***********/
 //#define ANALOG_READ_THRESHOLD 185
 /********RED RECEIVER************/
-#define ANALOG_READ_THRESHOLD 170
+#define ANALOG_READ_THRESHOLD 185 
 
 /********* SENDING VARIABLES *********/
 //MAX_MESSAGE_BYTECOUNT includes the null terminator
